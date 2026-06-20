@@ -6,11 +6,14 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test": "node scripts/run-reading-engine-tests.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.106.2",
+    "lunar-javascript": "^1.7.7",
     "next": "16.2.6",
+    "openai": "^6.42.0",
     "react": "19.2.4",
     "react-dom": "19.2.4"
   },

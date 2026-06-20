@@ -1,4 +1,4 @@
-import { startLoveReading } from "../actions";
+import { startReading } from "../actions";
 import type { Locale } from "../../lib/i18n";
 
 type StartReadingButtonProps = {
@@ -7,6 +7,7 @@ type StartReadingButtonProps = {
   locale: Locale;
   pagePath: string;
   source: string;
+  destinationPath?: string;
 };
 
 export function StartReadingButton({
@@ -15,8 +16,9 @@ export function StartReadingButton({
   locale,
   pagePath,
   source,
+  destinationPath = "/reading/love",
 }: StartReadingButtonProps) {
-  const action = startLoveReading.bind(null, locale, source, pagePath);
+  const action = startReading.bind(null, locale, source, pagePath, destinationPath);
 
   return (
     <form action={action}>

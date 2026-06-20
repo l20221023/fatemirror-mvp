@@ -6,10 +6,11 @@ import { hasLocale, type Locale } from "../lib/i18n";
 import { getOrCreateSessionId } from "../lib/session";
 import { logReadingEvent } from "../lib/tracking";
 
-export async function startLoveReading(
+export async function startReading(
   locale: Locale,
   source: string,
   pagePath: string,
+  destinationPath: string,
 ) {
   const sessionId = await getOrCreateSessionId();
   const safeLocale = hasLocale(locale) ? locale : "en";
@@ -24,5 +25,5 @@ export async function startLoveReading(
     },
   });
 
-  redirect(`/${safeLocale}/reading/love`);
+  redirect(`/${safeLocale}${destinationPath}`);
 }

@@ -37,13 +37,38 @@ export type TraditionalProfile = {
   zodiacBranch: Branch;
   shiChenBranch: Branch;
   shiChenRange: string;
-  xiaoLiuRenKey: XiaoLiuRenKey;
   mingGongBranch: Branch;
 };
 
 export type CompatibilityReading = {
   kind: CompatibilityKind;
   score: number;
+};
+
+export type CurrentTimingReading = {
+  momentIso: string;
+  lunarMonth: number;
+  lunarDay: number;
+  cycleIndex: 1 | 2 | 3 | 4 | 5 | 6;
+  cycleRangeLabel: string;
+  formulaValue: number;
+  state: XiaoLiuRenKey;
+};
+
+export type MarriageDirectionReading = {
+  sectorIndex: number;
+  directionKey:
+    | "north"
+    | "northeast"
+    | "east"
+    | "southeast"
+    | "south"
+    | "southwest"
+    | "west"
+    | "northwest";
+  axisKey: "north-south" | "east-west" | "northeast-southwest" | "northwest-southeast";
+  lunarMonth: number;
+  lunarDay: number;
 };
 
 const CHINA_TIME_ZONE = "Asia/Shanghai";
@@ -77,6 +102,15 @@ const SHI_CHEN = [
   { branch: "戌", range: "19:00-20:59" },
   { branch: "亥", range: "21:00-22:59" },
 ] as const satisfies ReadonlyArray<{ branch: Branch; range: string }>;
+
+const XIAO_LIU_REN_SEQUENCE: XiaoLiuRenKey[] = [
+  "da-an",
+  "liu-lian",
+  "su-xi",
+  "chi-kou",
+  "xiao-ji",
+  "kong-wang",
+];
 
 const LIU_HE_PAIRS = new Map<Branch, Branch>([
   ["子", "丑"],
@@ -130,6 +164,21 @@ const SAN_HE_GROUPS: Branch[][] = [
   ["巳", "酉", "丑"],
 ];
 
+const MARRIAGE_DIRECTIONS = [
+  "north",
+  "northeast",
+  "east",
+  "southeast",
+  "south",
+  "southwest",
+  "west",
+  "northwest",
+  "north",
+  "northeast",
+  "east",
+  "southeast",
+] as const;
+
 export function buildTraditionalProfile(
   birthDate: string,
   birthTime?: string,
@@ -151,16 +200,6 @@ export function buildTraditionalProfile(
   const lunarDay = Number(findPartValue(lunarParts, "day"));
   const zodiacBranch = parseYearBranch(yearText);
   const shiChen = resolveShiChen(normalizedTime);
-  const xiaoLiuRenIndex =
-    ((lunarMonth - 1) + (lunarDay - 1) + (shiChen.index - 1)) % 6;
-  const xiaoLiuRenKeys: XiaoLiuRenKey[] = [
-    "da-an",
-    "liu-lian",
-    "su-xi",
-    "chi-kou",
-    "xiao-ji",
-    "kong-wang",
-  ];
   const mingGongBranch = resolveMingGongBranch(lunarMonth, shiChen.index);
 
   return {
@@ -172,7 +211,6 @@ export function buildTraditionalProfile(
     zodiacBranch,
     shiChenBranch: shiChen.branch,
     shiChenRange: shiChen.range,
-    xiaoLiuRenKey: xiaoLiuRenKeys[xiaoLiuRenIndex] ?? "da-an",
     mingGongBranch,
   };
 }
@@ -207,6 +245,96 @@ export function buildCompatibilityReading(
   return { kind: "mixed", score: 68 };
 }
 
+export function buildCurrentTimingReading(momentIso?: string): CurrentTimingReading {
+  const moment = normalizeMoment(momentIso);
+  const localTwelveHour = Number(
+    new Intl.DateTimeFormat("en-US", {
+      hour: "numeric",
+      hour12: true,
+      timeZone: CHINA_TIME_ZONE,
+    }).format(moment),
+  );
+  const hourForCycle = localTwelveHour === 12 ? 0 : localTwelveHour;
+  const cycleIndex = (Math.floor(hourForCycle / 2) + 1) as CurrentTimingReading["cycleIndex"];
+  const lunarParts = new Intl.DateTimeFormat("zh-CN-u-ca-chinese", {
+    timeZone: CHINA_TIME_ZONE,
+    month: "2-digit",
+    day: "2-digit",
+  }).formatToParts(moment);
+  const lunarMonth = Number(findPartValue(lunarParts, "month"));
+  const lunarDay = Number(findPartValue(lunarParts, "day"));
+  const formulaValue = (lunarMonth + lunarDay + cycleIndex - 2) % 6;
+  const state = XIAO_LIU_REN_SEQUENCE[formulaValue] ?? "da-an";
+
+  return {
+    momentIso: moment.toISOString(),
+    lunarMonth,
+    lunarDay,
+    cycleIndex,
+    cycleRangeLabel: getXiaoLiuRenCycleLabel(cycleIndex),
+    formulaValue,
+    state,
+  };
+}
+
+export function buildMarriageDirectionReading(
+  profile: TraditionalProfile,
+): MarriageDirectionReading {
+  const sectorIndex = ((profile.lunarMonth - 1 + (profile.lunarDay - 1)) % 12) + 1;
+  const directionKey = MARRIAGE_DIRECTIONS[sectorIndex - 1];
+
+  return {
+    sectorIndex,
+    directionKey,
+    axisKey: directionToAxis(directionKey),
+    lunarMonth: profile.lunarMonth,
+    lunarDay: profile.lunarDay,
+  };
+}
+
+function normalizeMoment(momentIso?: string) {
+  if (!momentIso) {
+    return new Date();
+  }
+
+  const parsed = new Date(momentIso);
+
+  if (Number.isNaN(parsed.getTime())) {
+    return new Date();
+  }
+
+  return parsed;
+}
+
+function getXiaoLiuRenCycleLabel(cycleIndex: CurrentTimingReading["cycleIndex"]) {
+  const labels = {
+    1: "11-01",
+    2: "01-03",
+    3: "03-05",
+    4: "05-07",
+    5: "07-09",
+    6: "09-11",
+  } as const;
+
+  return labels[cycleIndex];
+}
+
+function directionToAxis(directionKey: MarriageDirectionReading["directionKey"]) {
+  if (directionKey === "north" || directionKey === "south") {
+    return "north-south";
+  }
+
+  if (directionKey === "east" || directionKey === "west") {
+    return "east-west";
+  }
+
+  if (directionKey === "northeast" || directionKey === "southwest") {
+    return "northeast-southwest";
+  }
+
+  return "northwest-southeast";
+}
+
 function findPartValue(
   parts: Intl.DateTimeFormatPart[],
   type: Intl.DateTimeFormatPartTypes,
@@ -215,9 +343,7 @@ function findPartValue(
 }
 
 function parseYearBranch(yearText: string): Branch {
-  const match = yearText.match(
-    /[甲乙丙丁戊己庚辛壬癸]([子丑寅卯辰巳午未申酉戌亥])年?/,
-  );
+  const match = yearText.match(/[甲乙丙丁戊己庚辛壬癸]([子丑寅卯辰巳午未申酉戌亥])年?/);
   const branch = match?.[1] as Branch | undefined;
 
   return branch && EARTHLY_BRANCHES.includes(branch) ? branch : "子";

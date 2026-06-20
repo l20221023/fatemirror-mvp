@@ -7,6 +7,8 @@
   --ink: #07131a;
   --accent: #c49b62;
   --accent-soft: #ddb57e;
+  --accent-rose: #9b6c67;
+  --accent-green: #6d938f;
   --font-sans-stack: "Avenir Next", "Segoe UI", "Helvetica Neue", "Nimbus Sans", sans-serif;
   --font-serif-stack: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", "Times New Roman", serif;
 }
@@ -29,9 +31,12 @@ html {
 body {
   background:
     radial-gradient(circle at top, rgba(196, 155, 98, 0.12), transparent 28%),
+    radial-gradient(circle at 82% 18%, rgba(155, 108, 103, 0.12), transparent 24%),
+    radial-gradient(circle at 18% 72%, rgba(109, 147, 143, 0.12), transparent 26%),
     linear-gradient(180deg, #0a1820 0%, #07131a 50%, #081017 100%);
   color: var(--foreground);
   font-family: var(--font-sans-stack);
+  min-height: 100vh;
 }
 
 body::before {
@@ -41,8 +46,26 @@ body::before {
   pointer-events: none;
   background:
     linear-gradient(120deg, rgba(255, 255, 255, 0.03), transparent 22%),
-    radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.04), transparent 20%);
-  opacity: 0.65;
+    radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.04), transparent 20%),
+    repeating-linear-gradient(
+      120deg,
+      rgba(255, 255, 255, 0.015) 0,
+      rgba(255, 255, 255, 0.015) 1px,
+      transparent 1px,
+      transparent 16px
+    );
+  opacity: 0.72;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 50% -10%, rgba(255, 248, 235, 0.09), transparent 30%),
+    linear-gradient(180deg, transparent 0%, rgba(255, 255, 255, 0.02) 100%);
+  mix-blend-mode: screen;
 }
 
 a,

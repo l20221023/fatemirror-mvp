@@ -52,334 +52,412 @@ export function stageLabel(stage: string, locale: Locale) {
     complicated: { en: "It's complicated", zh: "关系复杂" },
   };
 
-  const fallback = locale === "zh" ? "关系复杂" : "It's complicated";
-
-  return labels[stage as RelationshipStage]?.[locale] ?? fallback;
+  return labels[stage as RelationshipStage]?.[locale] ?? labels.complicated[locale];
 }
 
 export function getDictionary(locale: Locale) {
   const shared = {
     en: {
-      categoryLove: "Love & Connection",
-      categoryTiming: "Luck & Timing",
-      categoryFace: "Face Reading",
+      brand: "FateMirror",
+      categoryLove: "Love & Connection Reading",
+      categoryMoment: "Moment Reading",
+      navHome: "Home",
+      navAbout: "About",
+      navDisclaimer: "Disclaimer",
       openNow: "Open now",
       comingSoon: "Coming soon",
-      disclaimer:
-        "FateMirror is designed for personal reflection and entertainment. It does not provide legal, medical, or financial advice.",
+      man: "Man",
+      woman: "Woman",
       stageOptions: relationshipStages.map((value) => ({
         value,
         label: stageLabel(value, "en"),
       })),
+      disclaimer:
+        "FateMirror is designed for reflection and entertainment. It does not provide legal, medical, or financial advice.",
     },
     zh: {
-      categoryLove: "情感与连接",
-      categoryTiming: "时机与运势",
-      categoryFace: "面相与气质",
+      brand: "FateMirror",
+      categoryLove: "Love & Connection Reading",
+      categoryMoment: "Moment Reading",
+      navHome: "首页",
+      navAbout: "关于",
+      navDisclaimer: "免责声明",
       openNow: "现已开放",
       comingSoon: "即将推出",
-      disclaimer:
-        "FateMirror 仅用于个人反思与娱乐体验，不构成法律、医疗或财务建议。",
+      man: "Man",
+      woman: "Woman",
       stageOptions: relationshipStages.map((value) => ({
         value,
         label: stageLabel(value, "zh"),
       })),
+      disclaimer:
+        "FateMirror 仅用于个人反思与娱乐体验，不构成法律、医疗或财务建议。",
     },
   }[locale];
 
   const home = {
     en: {
-      headerCta: "Start Your Reading",
-      eyebrow: "Eastern-inspired love insight",
+      eyebrow: "Eastern-inspired reflective readings",
       title: "Discover the hidden patterns shaping your path.",
       subtitle:
-        "FateMirror offers reflective readings for love, timing, and personal energy, inspired by Eastern wisdom and reimagined for modern life.",
-      primaryCta: "Start Your Reading",
-      secondaryCta: "Preview a Reading",
-      liveNow: "Live now",
-      exploreTitle: "What you will explore",
-      explorePoints: [
-        "Your relational rhythm",
-        "Current emotional tension",
-        "Gentle next-step guidance",
-      ],
-      highlightTitle: "A softer reading style for modern relationships.",
-      highlightText:
-        "Not a horoscope clone. Not a dramatic prediction engine. Just a thoughtful lens on timing, connection, and personal energy.",
-      categoryEyebrow: "Category preview",
-      categoryTitle: "Built for one focused experience first.",
-      categoryText:
-        "FateMirror can grow into timing, energy, and identity readings, but the first release keeps the product centered on love and connection.",
-      categoryLoveDescription:
-        "Reflect on emotional patterns, mutual timing, and the shape of your current connection.",
-      categoryTimingDescription:
-        "Explore when momentum rises, when patience matters, and where life may be asking for alignment.",
-      categoryFaceDescription:
-        "A softer, modern take on personality cues, expression, and the energy people carry.",
-      enterReading: "Enter reading",
-      availableLater: "Available in a later release.",
-      differenceEyebrow: "A different lens on destiny",
-      differenceTitle:
-        "Insight shaped by timing, connection, and emotional energy.",
-      differenceTextOne:
-        "While astrology looks to the stars and tarot turns to symbols, FateMirror explores timing, connection, and personal energy through an Eastern-inspired perspective.",
-      differenceTextTwo:
-        "The difference is in the interpretive lens, not in loud mystical decoration. We want the experience to feel intimate, modern, and quietly atmospheric.",
-      howItWorksEyebrow: "How it works",
-      steps: [
-        {
-          title: "Share a few details",
-          text: "Add two birth dates, your relationship stage, and what feels most present on your heart.",
-        },
-        {
-          title: "Receive a personalized reflection",
-          text: "Get a calm, structured reading that highlights the current pattern between closeness, uncertainty, and timing.",
-        },
-        {
-          title: "Unlock deeper insight",
-          text: "Measure deeper interest by inviting users into a fuller layer of compatibility, timing, and next-step guidance.",
-        },
-      ],
-      sampleEyebrow: "Sample reading preview",
-      sampleTitle:
-        "A result page should feel calm, specific, and emotionally useful.",
-      sampleCardEyebrow: "Sample free reading",
-      previewLabel: "Preview",
-      sampleReading: [
-        {
-          title: "Connection Overview",
-          text: "There is real emotional gravity here, but it does not move in a straight line. One of you is leaning toward closeness while the other is still measuring the pace.",
-        },
-        {
-          title: "Current Emotional Pattern",
-          text: "The bond feels shaped by mixed timing rather than a lack of feeling. Curiosity is present, but so is self-protection.",
-        },
-        {
-          title: "Gentle Guidance",
-          text: "Do not force certainty too early. Let clarity come from steady actions, not only from intense moments.",
-        },
-      ],
-      lockedEyebrow: "What stays locked",
-      lockedTitle: "The deeper layer users can choose to unlock.",
-      lockedModules: [
-        "Deeper Compatibility",
-        "Hidden Tension",
-        "Timing Insight",
-        "Next Step Guidance",
-      ],
-      lockedText:
-        "The first version does not need real payment. It only needs to show whether users care enough to keep going.",
-      finalEyebrow: "Begin with one reading",
-      finalTitle: "Start with love. Learn whether the experience resonates.",
-      finalCta: "Start Your Reading",
+        "FateMirror reframes Eastern-inspired insight for modern life, with one path for love and one for the question currently on your mind.",
+      primaryCta: "Start with Love",
+      secondaryCta: "Read the Moment",
+      pathsEyebrow: "Two reading paths",
+      pathsTitle: "Choose the doorway that fits what you need right now.",
+      pathsText:
+        "One reading looks at connection and compatibility. The other reads the timing and movement around the matter you cannot stop thinking about.",
+      loveDescription:
+        "Read a relationship through palace compatibility, emotional context, and a calmer modern lens on connection.",
+      momentDescription:
+        "Ask about the matter on your mind right now and receive a quick timing signal shaped by the moment of inquiry.",
+      differenceEyebrow: "A quieter lens",
+      differenceTitle: "Not a loud prediction machine. A more composed way of reading love, timing, and direction.",
+      differenceText:
+        "FateMirror draws from Eastern metaphysical thinking, but presents it as a modern, atmospheric, emotionally intelligent product.",
+      finalEyebrow: "Begin with one question",
+      finalTitle: "Choose the reading that matches your attention, and let the rest unfold from there.",
+      finalCtaLove: "Open Love Reading",
+      finalCtaMoment: "Open Moment Reading",
     },
     zh: {
-      headerCta: "开始测试解读",
-      eyebrow: "东方灵感下的情感洞察",
+      eyebrow: "东方灵感下的现代反思式解读",
       title: "看见那些正在塑造你人生路径的隐藏模式。",
       subtitle:
-        "FateMirror 以现代、克制的方式重塑东方智慧，为你带来关于情感、时机与个人能量的反思式解读体验。",
-      primaryCta: "开始测试解读",
-      secondaryCta: "预览结果",
-      liveNow: "当前开放",
-      exploreTitle: "你将看到",
-      explorePoints: ["关系节奏", "当下情绪张力", "温和的下一步建议"],
-      highlightTitle: "更克制、更现代的情感解读方式。",
-      highlightText:
-        "它不是星座替代品，也不是夸张的预测引擎，而是一种关于时机、连接与个人能量的细腻视角。",
-      categoryEyebrow: "功能预览",
-      categoryTitle: "第一版先专注做好一个体验入口。",
-      categoryText:
-        "FateMirror 未来可以延展到时机、运势与身份感知，但第一版先只验证情感与连接这条主线。",
-      categoryLoveDescription:
-        "围绕情感模式、彼此时机与当前关系轮廓，做一轮温和而具体的反思。",
-      categoryTimingDescription:
-        "帮助用户感知何时适合推进、何时适合等待，以及人生节奏何时需要重新校准。",
-      categoryFaceDescription:
-        "以更现代的方式理解气质、表达与一个人所呈现的能量感。",
-      enterReading: "进入体验",
-      availableLater: "将在后续版本开放。",
-      differenceEyebrow: "一种不同的命运视角",
-      differenceTitle: "从时机、关系与情绪能量出发的洞察。",
-      differenceTextOne:
-        "如果说 astrology 看向星体、tarot 借助象征，FateMirror 则通过带有东方灵感的视角，去理解关系、时机与个人能量之间的流动。",
-      differenceTextTwo:
-        "它的差异不在于堆砌神秘符号，而在于解释世界的方式。我们希望它安静、亲密、有分寸，带着一点命运感，但不落入廉价玄学风。",
-      howItWorksEyebrow: "体验流程",
-      steps: [
-        {
-          title: "填写少量信息",
-          text: "提供两个人的出生日期、当前关系阶段，以及你心里最在意的问题。",
-        },
-        {
-          title: "收到个性化反思",
-          text: "看到一份简洁但有情绪价值的解读，聚焦连接、拉扯与当下时机。",
-        },
-        {
-          title: "解锁更深层内容",
-          text: "通过 deeper insight 按钮，验证用户是否真的想继续看更深的兼容性与行动建议。",
-        },
-      ],
-      sampleEyebrow: "结果示例",
-      sampleTitle: "结果页应该让人感觉安静、具体，而且情绪上被接住。",
-      sampleCardEyebrow: "免费示例结果",
-      previewLabel: "预览",
-      sampleReading: [
-        {
-          title: "关系概览",
-          text: "你们之间并不缺少情感引力，但它并不是稳定直线推进的。其中一方更想靠近，另一方仍在判断节奏是否安全。",
-        },
-        {
-          title: "当前情绪模式",
-          text: "这段关系的拉扯更像是时机错位，而不是没有感觉。好奇与自我保护同时存在。",
-        },
-        {
-          title: "温和建议",
-          text: "不要太早逼迫确定答案。真正的清晰，往往来自持续行动，而不是一次情绪高点。",
-        },
-      ],
-      lockedEyebrow: "被锁住的内容",
-      lockedTitle: "用户可以选择继续解锁的更深层部分。",
-      lockedModules: ["更深兼容性", "隐藏张力", "时机洞察", "下一步建议"],
-      lockedText:
-        "第一版不需要真的接支付，只需要验证用户是否足够在意，愿不愿意继续往下看更深一层。",
-      finalEyebrow: "先从一个 reading 开始",
-      finalTitle: "先从情感入口开始，验证这份体验是否真的打动人。",
-      finalCta: "开始测试解读",
+        "FateMirror 用更现代、克制的方式重塑东方灵感，一条路径看关系，一条路径看此刻心里放不下的那件事。",
+      primaryCta: "从 Love Reading 开始",
+      secondaryCta: "查看 Moment Reading",
+      pathsEyebrow: "两条正式路径",
+      pathsTitle: "先选一个最贴近你此刻需要的入口。",
+      pathsText:
+        "一条 reading 看关系与匹配，一条 reading 看当下这件事的时机与走势，让产品结构更清晰，也更像真实用户会使用的工具。",
+      loveDescription:
+        "从命宫匹配、关系阶段与问题语境出发，看这段连接到底是更顺、更费力，还是需要更有意识地经营。",
+      momentDescription:
+        "围绕你此刻心里那件事，按起念当下的时刻做一次即时解读，帮助你判断势头、风险与应对方式。",
+      differenceEyebrow: "更安静的一种命运视角",
+      differenceTitle: "它不是夸张的预测机器，而是一种更沉静地阅读关系、时机与方向的方式。",
+      differenceText:
+        "FateMirror 受东方命理思想启发，但会用现代、克制、有氛围的产品语言去表达，而不是堆砌神秘符号。",
+      finalEyebrow: "从一个问题开始",
+      finalTitle: "先选中你此刻最在意的入口，剩下的内容再慢慢展开。",
+      finalCtaLove: "打开 Love Reading",
+      finalCtaMoment: "打开 Moment Reading",
     },
   }[locale];
 
-  const form = {
+  const loveForm = {
     en: {
       backHome: "Back to home",
-      title: "Share a few details, then let the reading meet you where you are.",
+      title: "Read the connection through compatibility, not noise.",
       intro:
-        "This first version stays intentionally light. A little context helps FateMirror reflect on your current emotional rhythm without turning the experience into a long questionnaire.",
+        "This version of Love Reading centers on palace matching and emotional context. It is intentionally lighter than the fuller system that will come later.",
       highlights: [
-        "Two birth dates to ground the reflection",
-        "Your current relationship stage to shape the tone",
-        "One honest question so the reading feels personal",
+        "Two birth dates to derive palace matching",
+        "Two gender fields because the palace formula depends on them",
+        "One relationship context and one real question to set the tone",
       ],
-      eyebrow: "Begin your reading",
-      helper:
-        "Answer simply. The clearest readings come from a calm question, not a perfect one.",
+      eyebrow: "Love Reading",
+      helper: "Stay honest and simple. The result is meant to orient you, not overwhelm you.",
+      yourName: "Your name (optional)",
+      yourNamePlaceholder: "For a more personal tone",
+      yourGender: "Your gender",
+      theirGender: "Their gender",
       yourBirthDate: "Your birth date",
       yourBirthTime: "Your birth time",
       theirBirthDate: "Their birth date",
       theirBirthTime: "Their birth time",
       relationshipStage: "Relationship stage",
       stagePlaceholder: "Choose the closest fit",
-      heartQuestion: "What feels most unclear to you right now?",
+      heartQuestion: "What is weighing on your heart?",
       heartPlaceholder:
-        "For example: I cannot tell whether this distance means fear, timing, or the beginning of an ending.",
+        "For example: I want to know whether this connection is naturally aligned, or whether it will require much more effort than it seems.",
       birthTimeNote:
-        "Birth time is optional, but recommended for direct-calculation modules like Xiao Liu Ren and Ming Gong. If omitted, FateMirror will estimate from midday.",
+        "Birth time is optional here. The current compatibility layer is derived from birth year and gender, not from a full astrological chart.",
       error: "Please complete all required fields before starting your reading.",
-      submit: "Reveal My Reading",
+      submit: "Reveal My Love Reading",
     },
     zh: {
       backHome: "返回首页",
-      title: "只填少量信息，然后让这份解读贴近你此刻的状态。",
+      title: "先看这段连接到底合不合，而不是先被情绪拉着走。",
       intro:
-        "第一版故意保持轻量。少量上下文就足以让 FateMirror 贴近你当前的情绪节奏，而不是把它做成一份冗长问卷。",
+        "这一版 Love Reading 先以命宫匹配和关系语境为核心。它刻意保持轻量，后面你再提供更完整算法后，我们再继续扩展。",
       highlights: [
-        "两个人的出生日期，帮助建立解读锚点",
-        "当前关系阶段，用来控制结果语气",
-        "一个真诚的问题，让 reading 更像是在回应你",
+        "两个人的出生日期，用来推命宫",
+        "双方性别是必填，因为命宫算法依赖它",
+        "一个关系阶段和一个真实问题，用来控制结果语气",
       ],
-      eyebrow: "开始你的 reading",
-      helper: "不用想得太复杂。最好的输入不是最完整，而是最真诚。",
+      eyebrow: "Love Reading",
+      helper: "尽量简单，也尽量诚实。结果的作用是帮你定方向，而不是制造更多噪音。",
+      yourName: "你的名字（可选）",
+      yourNamePlaceholder: "让语气更贴近你",
+      yourGender: "你的性别",
+      theirGender: "对方性别",
       yourBirthDate: "你的出生日期",
       yourBirthTime: "你的出生时间",
       theirBirthDate: "对方的出生日期",
       theirBirthTime: "对方的出生时间",
       relationshipStage: "当前关系阶段",
       stagePlaceholder: "选择最接近的一项",
-      heartQuestion: "此刻最让你放不下、最不清楚的是什么？",
+      heartQuestion: "此刻你最想知道这段关系的什么？",
       heartPlaceholder:
-        "例如：我分不清这段距离感是因为害怕、时机不对，还是这段关系真的在走向结束。",
+        "例如：我想知道这段关系是不是天然更顺，还是以后会需要我花很多力气去维持。",
       birthTimeNote:
-        "出生时间是可选项，但像小六壬、命宫这类直算模块会更准确。如果不填，FateMirror 会按中午时刻估算。",
+        "这里的出生时间目前是可选项。当前匹配层主要看出生年份与性别，不是完整排盘。",
       error: "请先完成所有必填项，再开始 reading。",
-      submit: "查看我的解读",
+      submit: "查看我的 Love Reading",
     },
   }[locale];
 
-  const result = {
+  const momentForm = {
+    en: {
+      backHome: "Back to home",
+      title: "Read the movement around the matter on your mind.",
+      intro:
+        "Moment Reading uses the timing of the exact moment you ask. It is meant for a present question, not a long biography.",
+      highlights: [
+        "Best for one current matter",
+        "Uses the moment of inquiry as its anchor",
+        "Designed to give quick timing and action guidance",
+      ],
+      eyebrow: "Moment Reading",
+      helper:
+        "Ask about the thing you are genuinely thinking about now. Do not over-edit the question.",
+      yourName: "Your name (optional)",
+      yourNamePlaceholder: "For a more personal tone",
+      question: "What is on your mind right now?",
+      questionPlaceholder:
+        "For example: Should I reach out? Is this deal worth pushing? Is this situation about to shift?",
+      error: "Please add your question before starting the reading.",
+      submit: "Reveal My Moment Reading",
+    },
+    zh: {
+      backHome: "返回首页",
+      title: "围绕你此刻心里那件事，看它正在往哪里走。",
+      intro:
+        "Moment Reading 以你起念当下的时刻为锚点，更适合处理一个当前问题，而不是讲一整段人生背景。",
+      highlights: [
+        "最适合问一件当前的事",
+        "以起念时刻作为主要依据",
+        "结果更偏向时机判断与动作提醒",
+      ],
+      eyebrow: "Moment Reading",
+      helper: "问你现在真的在想的那件事，不要为了显得深刻而把问题写得太拧巴。",
+      yourName: "你的名字（可选）",
+      yourNamePlaceholder: "让语气更贴近你",
+      question: "你此刻心里正在想着什么事？",
+      questionPlaceholder:
+        "例如：我现在该不该联系对方？这件合作值不值得继续推？这个局面是不是快要动了？",
+      error: "请先写下你要问的事情，再开始 reading。",
+      submit: "查看我的 Moment Reading",
+    },
+  }[locale];
+
+  const loveResult = {
     en: {
       unavailableEyebrow: "Reading unavailable",
-      unavailableTitle:
-        "Start with a few details so FateMirror has something to reflect on.",
+      unavailableTitle: "Add both people, both genders, and your question first.",
       unavailableText:
-        "The result page needs both birth dates, your relationship stage, and the question on your heart. Once those are in place, the reading can become specific.",
+        "Love Reading needs the two birth dates, two genders, the relationship stage, and your question before it can become specific.",
       unavailableCta: "Go to the form",
-      restart: "Start another reading",
-      title: "Your connection is moving through a pattern, not just a moment.",
+      restart: "Start another love reading",
+      title: "This relationship can be read through alignment, not just longing.",
       stageLabel: "Stage",
-      storyPrefix: "What you shared suggests a story about",
-      snapshotTitle: "Reflection snapshot",
+      snapshotTitle: "Reading snapshot",
       primaryTone: "Primary tone",
       currentStage: "Current stage",
       focusLabel: "Focus",
-      traditionalSnapshot: "Traditional calculation snapshot",
-      youLabel: "You",
-      theyLabel: "They",
-      lunarDate: "Lunar date",
-      shiChen: "Shi Chen",
-      mingGong: "Ming Gong",
-      xiaoLiuRen: "Xiao Liu Ren",
-      zodiac: "Zodiac",
-      estimatedTime:
-        "Estimated from midday because no birth time was provided.",
-      compatibilityMarker: "Compatibility marker",
-      deeperPreviewEyebrow: "Deeper insight preview",
-      deeperPreviewTitle: "There is more beneath the surface of this connection.",
-      unlockEyebrow: "Unlock deeper insight",
-      unlockTitle: "Join the early-access list for the fuller reading.",
-      unlockText:
-        "This first release is measuring interest, not charging users yet. If this reading resonated, leave your email and we will save your place for the deeper version.",
-      emailLabel: "Email address",
-      joinedMessage:
-        "You're in. We'll let you know as soon as the deeper love reading is ready.",
-      joinError: "Please add your email first to unlock the deeper layer.",
-      unlockButton: "Unlock Deeper Insight",
+      compatibilityMarker: "Palace compatibility",
+      yourPalace: "Your palace",
+      theirPalace: "Their palace",
+      freeLayerEyebrow: "Compatibility layer",
+      freeTextTitle: "Current reading",
+      unlockPreviewEyebrow: "Deeper layer",
+      unlockPreviewTitle: "A fuller relationship system can sit behind this first compatibility signal.",
+      unlockPreviewText:
+        "This version begins with whether the bond is naturally aligned, second-tier aligned, or less aligned. A fuller method can deepen the interpretation later.",
+      unlockTeaser:
+        "True wisdom reveals itself to those who seek with sincerity.",
+      paywallTitle: "Unlock the fuller love layer",
+      paywallSubtitle:
+        "Move from palace matching into a fuller relationship interpretation once the broader love method is ready.",
+      paywallPrice: "$3.99",
+      paidLayerEyebrow: "Unlocked layer",
+      paidLayerTitle: "The deeper love method will expand from compatibility into fuller interpretation.",
+      unlockButton: "Continue to unlock",
+      unlockPageTitle: "Unlock the deeper love layer",
+      unlockPageText:
+        "Payment remains a placeholder in this MVP. Use the demo unlock to simulate the deeper love layer during testing.",
+      unlockPageDemo: "Demo unlock this love reading",
     },
     zh: {
       unavailableEyebrow: "暂时无法显示结果",
-      unavailableTitle: "先填写一些基本信息，FateMirror 才能给出像样的回应。",
+      unavailableTitle: "先把双方、性别和问题补齐，Love Reading 才能真正成立。",
       unavailableText:
-        "结果页需要两个人的出生日期、当前关系阶段，以及你心里的那个问题。有了这些，解读才会具体。",
+        "Love Reading 需要两个人的出生日期、双方性别、关系阶段，以及你心里的那个问题，结果才会具体。",
       unavailableCta: "去填写表单",
-      restart: "重新开始一轮 reading",
-      title: "你们之间正在经历的，是一种模式，而不只是一个瞬间。",
+      restart: "重新开始一轮 Love Reading",
+      title: "这段关系可以先从“合不合”来读，而不只是从想不想来读。",
       stageLabel: "阶段",
-      storyPrefix: "你给出的信息更像是在讲述这样一段故事：",
-      snapshotTitle: "关系快照",
+      snapshotTitle: "阅读快照",
       primaryTone: "主要氛围",
       currentStage: "当前阶段",
       focusLabel: "核心主题",
-      traditionalSnapshot: "传统计算快照",
-      youLabel: "你",
-      theyLabel: "对方",
-      lunarDate: "农历日期",
-      shiChen: "时辰",
-      mingGong: "命宫",
-      xiaoLiuRen: "小六壬",
-      zodiac: "生肖",
-      estimatedTime: "因为未填写出生时间，此处按中午时刻做估算。",
-      compatibilityMarker: "兼容度标记",
-      deeperPreviewEyebrow: "更深层内容预览",
-      deeperPreviewTitle: "这段关系表面之下，还有更多值得看的部分。",
-      unlockEyebrow: "解锁更深层洞察",
-      unlockTitle: "留下邮箱，加入完整版本的早期体验名单。",
-      unlockText:
-        "第一版的目标是先验证兴趣，而不是立刻收费。如果这份解读对你有触动，留下邮箱就好；完整版本准备好后，我们会第一时间把它送到你面前。",
-      emailLabel: "留下你的邮箱",
-      joinedMessage: "已为你保留位置。完整版本准备好后，我们会第一时间通知你。",
-      joinError: "请先填写邮箱，再继续解锁更深层内容。",
-      unlockButton: "解锁更深层内容",
+      compatibilityMarker: "命宫匹配",
+      yourPalace: "你的命宫",
+      theirPalace: "对方命宫",
+      freeLayerEyebrow: "匹配层",
+      freeTextTitle: "当前解读",
+      unlockPreviewEyebrow: "更深层",
+      unlockPreviewTitle: "这一层之后，还可以接上更完整的关系系统。",
+      unlockPreviewText:
+        "当前版本先从命宫匹配出发，判断这段连接是天然更顺、次级合适，还是更需要用力经营。更完整的 love 方法会在后续继续补上。",
+      unlockTeaser: "诚意叩门，方能入室。深层玄机，为有缘人备。",
+      paywallTitle: "解锁更完整的 Love 层",
+      paywallSubtitle:
+        "先从命宫匹配开始，等更完整的 Love 方法就绪后，再继续走向更深层的关系解读。",
+      paywallPrice: "$3.99",
+      paidLayerEyebrow: "已解锁层",
+      paidLayerTitle: "更深层的 Love 方法会在这里从匹配继续展开到完整关系解释。",
+      unlockButton: "继续解锁",
+      unlockPageTitle: "解锁更深层 Love 内容",
+      unlockPageText:
+        "当前 MVP 里，支付仍是占位流程。你可以先通过测试解锁按钮，模拟更深层 Love 内容的已付费状态。",
+      unlockPageDemo: "测试解锁这份 Love Reading",
     },
   }[locale];
 
-  return { shared, home, form, result };
+  const momentResult = {
+    en: {
+      unavailableEyebrow: "Reading unavailable",
+      unavailableTitle: "Add the question on your mind first.",
+      unavailableText:
+        "Moment Reading only needs the matter you are asking about and the time you asked it.",
+      unavailableCta: "Go to the form",
+      restart: "Start another moment reading",
+      title: "The moment you asked already carries a signal.",
+      snapshotTitle: "Moment snapshot",
+      primaryTone: "Primary tone",
+      focusLabel: "Current focus",
+      freeLayerEyebrow: "Moment layer",
+      freeTextTitle: "Current reading",
+      unlockPreviewEyebrow: "Deeper layer",
+      unlockPreviewTitle: "There is more to see when the moment deserves a second pass.",
+      unlockPreviewText:
+        "The deeper layer expands the signal into a steadier interpretation and more grounded action guidance.",
+      unlockTeaser:
+        "True wisdom reveals itself to those who seek with sincerity.",
+      paywallTitle: "Unlock the fuller moment layer",
+      paywallSubtitle:
+        "Move from a quick signal into a fuller reading of timing, friction, and what to do next.",
+      paywallPrice: "$3.99",
+      paidLayerEyebrow: "Unlocked layer",
+      paidLayerTitle: "A deeper reading of the question, the timing, and the next move.",
+      unlockButton: "Continue to unlock",
+      unlockPageTitle: "Unlock the deeper moment layer",
+      unlockPageText:
+        "Payment remains a placeholder in this MVP. Use the demo unlock to simulate the deeper moment layer during testing.",
+      unlockPageDemo: "Demo unlock this moment reading",
+      currentQuestion: "Current question",
+      currentSignal: "Current signal",
+    },
+    zh: {
+      unavailableEyebrow: "暂时无法显示结果",
+      unavailableTitle: "先把你要问的事情写出来。",
+      unavailableText:
+        "Moment Reading 主要需要的，是你正在问什么，以及你起念的那个时刻。",
+      unavailableCta: "去填写表单",
+      restart: "重新开始一轮 Moment Reading",
+      title: "你起念的那个瞬间，本身就已经带着一个信号。",
+      snapshotTitle: "时刻快照",
+      primaryTone: "主要氛围",
+      focusLabel: "当前焦点",
+      freeLayerEyebrow: "Moment 层",
+      freeTextTitle: "当前解读",
+      unlockPreviewEyebrow: "更深层",
+      unlockPreviewTitle: "如果这件事值得再看一遍，后面还有更完整的一层。",
+      unlockPreviewText:
+        "更深层会继续把这次信号展开成更稳的判断，并给出更贴近现实动作的建议。",
+      unlockTeaser: "诚意叩门，方能入室。深层玄机，为有缘人备。",
+      paywallTitle: "解锁更完整的 Moment 层",
+      paywallSubtitle:
+        "从一个快信号，进入更完整的时机判断、阻力识别与下一步建议。",
+      paywallPrice: "$3.99",
+      paidLayerEyebrow: "已解锁层",
+      paidLayerTitle: "更深一层去看这件事、它的时机，以及你接下来该怎么动。",
+      unlockButton: "继续解锁",
+      unlockPageTitle: "解锁更深层 Moment 内容",
+      unlockPageText:
+        "当前 MVP 里，支付仍是占位流程。你可以先通过测试解锁按钮，模拟更深层 Moment 内容的已付费状态。",
+      unlockPageDemo: "测试解锁这份 Moment Reading",
+      currentQuestion: "当前问题",
+      currentSignal: "当前信号",
+    },
+  }[locale];
+
+  const about = {
+    en: {
+      eyebrow: "About FateMirror",
+      title: "A reflective reading product built to help people see more clearly, not surrender blindly.",
+      philosophyTitle: "Philosophy",
+      philosophyText:
+        "FateMirror is built around one idea: destiny is not something to obey without thought. It is something to understand, so that choice becomes possible again.",
+      methodTitle: "Method",
+      methodText:
+        "The product draws from traditional Eastern metaphysical thinking, but expresses it through a modern, emotionally intelligent web experience.",
+      quote:
+        "Fate is not meant to surrender to — it is meant to be understood, then chosen.",
+      contactTitle: "Contact",
+      contactText:
+        "A fuller contact flow can live here later. For now, this page anchors trust and product philosophy.",
+    },
+    zh: {
+      eyebrow: "关于 FateMirror",
+      title: "这是一款帮助人看清局势、找回选择权的反思式解读产品，而不是让人盲目屈从的命运站。",
+      philosophyTitle: "产品理念",
+      philosophyText:
+        "FateMirror 的底层想法很简单：命运不是拿来无条件服从的，而是拿来看懂、然后重新选择的。",
+      methodTitle: "方法来源",
+      methodText:
+        "它受传统东方命理思想启发，但会通过更现代、克制、情绪智能更高的网页体验来呈现。",
+      quote: "命运不是用来屈服的，而是用来看懂、然后选择的。",
+      contactTitle: "联系方式",
+      contactText:
+        "后续可以在这里补更完整的联系入口；当前先承担品牌解释与信任建立的作用。",
+    },
+  }[locale];
+
+  const disclaimerPage = {
+    en: {
+      eyebrow: "Disclaimer",
+      title: "A reading should offer perspective, not remove responsibility.",
+      divination:
+        "All readings on this platform are based on traditional metaphysical interpretation and should be understood as tendency, not absolute destiny. User action remains a decisive variable.",
+      health:
+        "Any body, mood, or wellness-related guidance is traditional cultural reference only and does not constitute medical diagnosis or treatment advice. Please consult qualified medical professionals for health concerns.",
+      user:
+        "Any decisions made based on content from this platform remain the responsibility of the user.",
+    },
+    zh: {
+      eyebrow: "免责声明",
+      title: "解读可以提供视角，但不应替代人的责任与判断。",
+      divination:
+        "本平台所有解读内容均基于传统命理推算方法，属于趋势推演，不构成对命运的绝对判定。用户的自主行动仍是改变趋势的重要变量。",
+      health:
+        "涉及五行体质、情志调养或身心状态的内容，仅供传统文化参考，不构成任何医疗诊断或治疗建议。如有健康问题，请咨询专业医疗人员。",
+      user:
+        "用户基于平台内容所做的一切决定，均由用户自行负责。",
+    },
+  }[locale];
+
+  return {
+    shared,
+    home,
+    loveForm,
+    momentForm,
+    loveResult,
+    momentResult,
+    about,
+    disclaimerPage,
+  };
 }

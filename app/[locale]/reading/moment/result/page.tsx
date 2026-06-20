@@ -4,18 +4,19 @@ import { notFound } from "next/navigation";
 import { DisclaimerFooter } from "../../../../components/disclaimer-footer";
 import { LanguageSwitcher } from "../../../../components/language-switcher";
 import { PaywallGate } from "../../../../components/paywall-gate";
+import { SixDeityDisplay } from "../../../../components/six-deity-display";
 import { getDictionary, hasLocale, serializeSearchParams } from "../../../../../lib/i18n";
 import { getReadingPaymentState } from "../../../../../lib/paywall";
 import {
-  buildLoveReadingExperience,
-  hasCompleteLoveReadingInput,
-  readLoveInputFromSearchParams,
+  buildMomentReadingExperience,
+  hasCompleteMomentReadingInput,
+  readMomentInputFromSearchParams,
 } from "../../../../../lib/reading";
 
-type LocalizedLoveResultPageProps = PageProps<"/[locale]/reading/love/result">;
+type LocalizedMomentResultPageProps = PageProps<"/[locale]/reading/moment/result">;
 
-export default async function LocalizedLoveResultPage(
-  props: LocalizedLoveResultPageProps,
+export default async function LocalizedMomentResultPage(
+  props: LocalizedMomentResultPageProps,
 ) {
   const { locale } = await props.params;
 
@@ -24,34 +25,34 @@ export default async function LocalizedLoveResultPage(
   }
 
   const searchParams = await props.searchParams;
-  const input = readLoveInputFromSearchParams(searchParams);
+  const input = readMomentInputFromSearchParams(searchParams);
   const dict = getDictionary(locale);
   const localizedQuery = serializeSearchParams(searchParams);
 
-  if (!hasCompleteLoveReadingInput(input)) {
+  if (!hasCompleteMomentReadingInput(input)) {
     return (
       <main className="mx-auto flex min-h-screen w-full max-w-5xl flex-col items-center justify-center px-6 py-16 text-center sm:px-8">
         <p className="text-sm tracking-[0.28em] text-[color:var(--color-accent)] uppercase">
-          {dict.loveResult.unavailableEyebrow}
+          {dict.momentResult.unavailableEyebrow}
         </p>
         <h1 className="mt-4 font-serif text-5xl text-balance">
-          {dict.loveResult.unavailableTitle}
+          {dict.momentResult.unavailableTitle}
         </h1>
         <p className="mt-6 max-w-2xl text-base leading-8 text-[color:var(--color-muted)]">
-          {dict.loveResult.unavailableText}
+          {dict.momentResult.unavailableText}
         </p>
         <Link
-          href={`/${locale}/reading/love`}
+          href={`/${locale}/reading/moment`}
           className="mt-10 inline-flex rounded-full bg-[color:var(--color-accent)] px-6 py-3 text-sm font-medium text-[color:var(--color-ink)] transition hover:bg-[color:var(--color-accent-soft)]"
         >
-          {dict.loveResult.unavailableCta}
+          {dict.momentResult.unavailableCta}
         </Link>
       </main>
     );
   }
 
   const isPaid = await getReadingPaymentState(input.readingId || null);
-  const reading = await buildLoveReadingExperience(input, locale, isPaid);
+  const reading = await buildMomentReadingExperience(input, locale, isPaid);
 
   return (
     <main className="mx-auto w-full max-w-6xl px-6 py-10 sm:px-8 lg:px-12">
@@ -65,7 +66,7 @@ export default async function LocalizedLoveResultPage(
         <div className="flex flex-wrap items-center justify-end gap-3">
           <LanguageSwitcher
             locale={locale}
-            pathSuffix="/reading/love/result"
+            pathSuffix="/reading/moment/result"
             queryString={localizedQuery}
           />
           <Link
@@ -75,10 +76,10 @@ export default async function LocalizedLoveResultPage(
             {dict.shared.navHome}
           </Link>
           <Link
-            href={`/${locale}/reading/love`}
+            href={`/${locale}/reading/moment`}
             className="text-sm text-[color:var(--color-muted)] transition hover:text-[color:var(--color-foreground)]"
           >
-            {dict.loveResult.restart}
+            {dict.momentResult.restart}
           </Link>
         </div>
       </div>
@@ -87,10 +88,10 @@ export default async function LocalizedLoveResultPage(
         <div className="grid gap-8 lg:grid-cols-[1.04fr_0.96fr]">
           <div>
             <p className="text-sm tracking-[0.28em] text-[color:var(--color-accent)] uppercase">
-              {dict.loveResult.freeLayerEyebrow}
+              {dict.momentResult.freeLayerEyebrow}
             </p>
             <h1 className="mt-4 font-serif text-5xl text-balance leading-tight">
-              {dict.loveResult.title}
+              {dict.momentResult.title}
             </h1>
             <p className="mt-6 max-w-3xl text-base leading-8 text-[color:var(--color-muted)]">
               {reading.snapshotTone}
@@ -109,12 +110,12 @@ export default async function LocalizedLoveResultPage(
 
           <div className="rounded-[1.75rem] border border-white/10 bg-black/12 p-6">
             <p className="text-xs tracking-[0.2em] text-[color:var(--color-muted)] uppercase">
-              {dict.loveResult.snapshotTitle}
+              {dict.momentResult.snapshotTitle}
             </p>
             <dl className="mt-5 space-y-4 text-sm">
               <div className="flex items-start justify-between gap-4">
                 <dt className="text-[color:var(--color-muted)]">
-                  {dict.loveResult.primaryTone}
+                  {dict.momentResult.primaryTone}
                 </dt>
                 <dd className="text-right text-[color:var(--color-foreground)]">
                   {reading.snapshotTone}
@@ -122,15 +123,7 @@ export default async function LocalizedLoveResultPage(
               </div>
               <div className="flex items-start justify-between gap-4">
                 <dt className="text-[color:var(--color-muted)]">
-                  {dict.loveResult.currentStage}
-                </dt>
-                <dd className="text-right text-[color:var(--color-foreground)]">
-                  {reading.stageLabel}
-                </dd>
-              </div>
-              <div className="flex items-start justify-between gap-4">
-                <dt className="text-[color:var(--color-muted)]">
-                  {dict.loveResult.focusLabel}
+                  {dict.momentResult.focusLabel}
                 </dt>
                 <dd className="text-right text-[color:var(--color-foreground)]">
                   {reading.focusLabel}
@@ -140,42 +133,39 @@ export default async function LocalizedLoveResultPage(
           </div>
         </div>
 
-        <div className="mt-10 grid gap-6 xl:grid-cols-[1.02fr_0.98fr]">
-          <article className="rounded-[2rem] border border-white/10 bg-black/10 p-6">
-            <p className="text-xs tracking-[0.2em] text-[color:var(--color-muted)] uppercase">
-              {dict.loveResult.freeTextTitle}
-            </p>
-            <p className="mt-4 text-base leading-8 text-[color:var(--color-muted)]">
-              {reading.freeReadingText}
-            </p>
-          </article>
+        <div className="mt-10 grid gap-6 xl:grid-cols-[1.08fr_0.92fr]">
+          <div className="space-y-6">
+            <SixDeityDisplay
+              locale={locale}
+              deity={reading.xiaoLiuRen.deity}
+              meaning={reading.xiaoLiuRen.meaning}
+              advice={reading.xiaoLiuRen.advice}
+              formulaLabel={reading.xiaoLiuRen.formulaLabel}
+              shichenLabel={reading.xiaoLiuRen.shichenLabel}
+            />
+
+            <article className="rounded-[2rem] border border-white/10 bg-black/10 p-6">
+              <p className="text-xs tracking-[0.2em] text-[color:var(--color-muted)] uppercase">
+                {dict.momentResult.freeTextTitle}
+              </p>
+              <p className="mt-4 text-base leading-8 text-[color:var(--color-muted)]">
+                {reading.freeReadingText}
+              </p>
+            </article>
+          </div>
 
           <section className="rounded-[1.5rem] border border-white/10 bg-white/5 p-6">
             <p className="text-xs tracking-[0.2em] text-[color:var(--color-muted)] uppercase">
-              {dict.loveResult.compatibilityMarker}
+              {dict.momentResult.currentQuestion}
             </p>
-            <h2 className="mt-4 font-serif text-4xl">
-              {reading.compatibility.score}/100
-            </h2>
-            <p className="mt-3 text-lg text-[color:var(--color-foreground)]">
-              {reading.compatibility.headline}
+            <p className="mt-4 text-base leading-8 text-[color:var(--color-muted)]">
+              {input.heartQuestion}
             </p>
-            <p className="mt-4 text-sm leading-8 text-[color:var(--color-muted)]">
-              {reading.compatibility.note}
-            </p>
-            <div className="mt-6 grid gap-4 md:grid-cols-2">
-              <div className="rounded-[1.25rem] border border-white/8 bg-black/10 p-5">
-                <p className="text-sm text-[color:var(--color-muted)]">
-                  {dict.loveResult.yourPalace}
-                </p>
-                <p className="mt-3 font-serif text-3xl">{reading.palaces.you}</p>
-              </div>
-              <div className="rounded-[1.25rem] border border-white/8 bg-black/10 p-5">
-                <p className="text-sm text-[color:var(--color-muted)]">
-                  {dict.loveResult.theirPalace}
-                </p>
-                <p className="mt-3 font-serif text-3xl">{reading.palaces.counterpart}</p>
-              </div>
+            <div className="mt-6 rounded-[1.25rem] border border-white/8 bg-black/10 p-5">
+              <p className="text-sm text-[color:var(--color-muted)]">
+                {dict.momentResult.currentSignal}
+              </p>
+              <p className="mt-3 font-serif text-3xl">{reading.xiaoLiuRen.deity}</p>
             </div>
           </section>
         </div>
@@ -186,10 +176,10 @@ export default async function LocalizedLoveResultPage(
           <div className="space-y-6">
             <div className="rounded-[2rem] border border-[color:rgba(196,155,98,0.18)] bg-[linear-gradient(180deg,rgba(196,155,98,0.12),rgba(255,255,255,0.03))] p-8">
               <p className="text-sm tracking-[0.28em] text-[color:var(--color-accent)] uppercase">
-                {dict.loveResult.paidLayerEyebrow}
+                {dict.momentResult.paidLayerEyebrow}
               </p>
               <h2 className="mt-4 font-serif text-4xl text-balance">
-                {dict.loveResult.paidLayerTitle}
+                {dict.momentResult.paidLayerTitle}
               </h2>
               <p className="mt-6 max-w-4xl text-base leading-8 text-[color:var(--color-muted)]">
                 {reading.paidReadingText}
@@ -202,13 +192,13 @@ export default async function LocalizedLoveResultPage(
           <div className="space-y-6">
             <section className="rounded-[2rem] border border-white/10 bg-white/5 p-8">
               <p className="text-sm tracking-[0.28em] text-[color:var(--color-accent)] uppercase">
-                {dict.loveResult.unlockPreviewEyebrow}
+                {dict.momentResult.unlockPreviewEyebrow}
               </p>
               <h2 className="mt-4 font-serif text-4xl text-balance">
-                {dict.loveResult.unlockPreviewTitle}
+                {dict.momentResult.unlockPreviewTitle}
               </h2>
               <p className="mt-5 max-w-4xl text-base leading-8 text-[color:var(--color-muted)]">
-                {dict.loveResult.unlockPreviewText}
+                {dict.momentResult.unlockPreviewText}
               </p>
               <p className="mt-4 max-w-4xl text-base leading-8 text-[color:var(--color-muted)]">
                 {reading.paidPreviewText}
@@ -217,11 +207,11 @@ export default async function LocalizedLoveResultPage(
 
             <PaywallGate
               locale={locale}
-              unlockHref={`/${locale}/reading/love/result/unlock?${localizedQuery}`}
-              title={dict.loveResult.paywallTitle}
-              subtitle={dict.loveResult.paywallSubtitle}
-              price={dict.loveResult.paywallPrice}
-              teaser={dict.loveResult.unlockTeaser}
+              unlockHref={`/${locale}/reading/moment/result/unlock?${localizedQuery}`}
+              title={dict.momentResult.paywallTitle}
+              subtitle={dict.momentResult.paywallSubtitle}
+              price={dict.momentResult.paywallPrice}
+              teaser={dict.momentResult.unlockTeaser}
             />
           </div>
         )}
