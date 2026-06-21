@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -8,200 +9,191 @@ import { getDictionary, hasLocale } from "../../lib/i18n";
 
 type LocalizedHomePageProps = PageProps<"/[locale]">;
 
-export default async function LocalizedHomePage(
-  props: LocalizedHomePageProps,
-) {
+export default async function LocalizedHomePage(props: LocalizedHomePageProps) {
   const { locale } = await props.params;
-
-  if (!hasLocale(locale)) {
-    notFound();
-  }
+  if (!hasLocale(locale)) notFound();
 
   const dict = getDictionary(locale);
+  const isZh = locale === "zh";
+
+  const relationshipTools = [
+    {
+      title: isZh ? "关系与连接解读" : "Relationship & Connection Reading",
+      description: isZh
+        ? "需要双方出生日期、性别、关系阶段和一个现实问题。会先给出双方命卦匹配，再补现实解释与行动建议。"
+        : "Use both birthdays, genders, the current stage, and one real question. The flow returns a deterministic match result first, then a grounded interpretation.",
+      href: "/reading/love",
+      cta: isZh ? "开始关系解读" : "Start relationship reading",
+      note: isZh ? "综合 Reading" : "Guided reading",
+      source: "home_relationship_primary",
+    },
+    {
+      title: isZh ? "双方命卦匹配" : "Ming Gua Match",
+      description: isZh
+        ? "需要双方出生年份和性别。会得到传统正配、同组或跨组结果，并附现实关系提醒。"
+        : "Use two birth years and genders to compare the two Ming Gua groups and see the traditional match type.",
+      href: "/reading/ming-gua-match",
+      cta: isZh ? "查看双方匹配" : "View match",
+      note: isZh ? "基础工具" : "Base tool",
+      source: "home_relationship_match",
+    },
+    {
+      title: isZh ? "婚配方位" : "Marriage Direction",
+      description: isZh
+        ? "需要公历生日，可选出生地说明。会返回传统方向轴与完整 calculation trace。"
+        : "Use a Gregorian birth date and optional birthplace note to get the traditional direction axis and full calculation trace.",
+      href: "/reading/marriage-direction",
+      cta: isZh ? "计算婚配方位" : "Calculate direction",
+      note: isZh ? "基础工具" : "Base tool",
+      source: "home_relationship_direction",
+    },
+  ];
+
+  const otherTools = [
+    {
+      title: isZh ? "我的命卦" : "My Ming Gua",
+      description: isZh
+        ? "需要出生年份和性别。会得到命卦数字、分组、本卦方位和有利方向。"
+        : "Use a birth year and gender to calculate the palace number, group, home direction, and favorable directions.",
+      href: "/reading/ming-gua",
+      cta: isZh ? "计算我的命卦" : "Calculate my Ming Gua",
+      note: isZh ? "个人解读" : "Personal",
+      source: "home_personal_ming_gua",
+    },
+    {
+      title: isZh ? "此刻之问" : "Moment Question",
+      description: isZh
+        ? "需要起念时刻和你此刻最想问的问题。会根据农历与时辰计算小六壬结果。"
+        : "Use the moment of inquiry and your current question to calculate a deterministic Xiao Liu Ren result.",
+      href: "/reading/moment",
+      cta: isZh ? "开始此刻之问" : "Start moment question",
+      note: isZh ? "即时解读" : "Immediate",
+      source: "home_moment_question",
+    },
+  ];
 
   return (
-    <main className="relative overflow-hidden">
-      <TrackEvent
-        eventName="landing_view"
-        page={`/${locale}`}
-        metadata={{ locale, surface: "home" }}
-      />
+    <main className="mx-auto w-full max-w-7xl px-6 pb-14 pt-8 sm:px-8 lg:px-12">
+      <TrackEvent eventName="landing_view" page={`/${locale}`} metadata={{ locale, surface: "home" }} />
 
-      <div className="pointer-events-none absolute inset-0 opacity-80">
-        <div className="absolute left-1/2 top-0 h-[32rem] w-[32rem] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,_rgba(196,155,98,0.18),_transparent_68%)] blur-3xl" />
-        <div className="absolute right-[-8rem] top-[24rem] h-[28rem] w-[28rem] rounded-full bg-[radial-gradient(circle,_rgba(157,97,89,0.16),_transparent_70%)] blur-3xl" />
-        <div className="absolute left-[-10rem] top-[42rem] h-[30rem] w-[30rem] rounded-full bg-[radial-gradient(circle,_rgba(111,151,148,0.12),_transparent_70%)] blur-3xl" />
-      </div>
-
-      <section className="mx-auto flex min-h-screen w-full max-w-7xl flex-col px-6 pb-18 pt-8 sm:px-8 lg:px-12">
-        <header className="flex flex-wrap items-center justify-between gap-4 py-4">
-          <Link
-            href={`/${locale}`}
-            className="text-sm tracking-[0.32em] text-[color:var(--color-muted)] uppercase"
-          >
-            {dict.shared.brand}
+      <header className="flex flex-wrap items-center justify-between gap-4 py-4">
+        <Link href={`/${locale}`} className="text-sm tracking-[0.32em] text-[color:var(--color-muted)] uppercase">
+          {dict.shared.brand}
+        </Link>
+        <div className="flex flex-wrap items-center justify-end gap-3">
+          <Link href={`/${locale}/about`} className="text-sm text-[color:var(--color-muted)] transition hover:text-[color:var(--color-foreground)]">
+            {dict.shared.navAbout}
           </Link>
-          <div className="flex flex-wrap items-center justify-end gap-3">
-            <Link
-              href={`/${locale}/about`}
-              className="text-sm text-[color:var(--color-muted)] transition hover:text-[color:var(--color-foreground)]"
-            >
-              {dict.shared.navAbout}
-            </Link>
-            <Link
-              href={`/${locale}/disclaimer`}
-              className="text-sm text-[color:var(--color-muted)] transition hover:text-[color:var(--color-foreground)]"
-            >
-              {dict.shared.navDisclaimer}
-            </Link>
-            <LanguageSwitcher locale={locale} pathSuffix="" />
-          </div>
-        </header>
+          <Link href={`/${locale}/methodology`} className="text-sm text-[color:var(--color-muted)] transition hover:text-[color:var(--color-foreground)]">
+            {isZh ? "方法说明" : "Methodology"}
+          </Link>
+          <Link href={`/${locale}/disclaimer`} className="text-sm text-[color:var(--color-muted)] transition hover:text-[color:var(--color-foreground)]">
+            {dict.shared.navDisclaimer}
+          </Link>
+          <LanguageSwitcher locale={locale} pathSuffix="" />
+        </div>
+      </header>
 
-        <div className="grid flex-1 items-center gap-12 py-14 lg:grid-cols-[1.02fr_0.98fr] lg:py-20">
-          <div className="max-w-3xl">
-            <p className="mb-6 text-sm tracking-[0.28em] text-[color:var(--color-accent)] uppercase">
-              {dict.home.eyebrow}
-            </p>
-            <h1 className="font-serif text-5xl leading-[0.96] text-balance sm:text-6xl lg:text-7xl">
-              {dict.home.title}
-            </h1>
-            <p className="mt-8 max-w-2xl text-lg leading-8 text-[color:var(--color-muted)] sm:text-xl">
-              {dict.home.subtitle}
-            </p>
+      <section className="py-12 lg:py-16">
+        <p className="text-sm tracking-[0.28em] text-[color:var(--color-accent)] uppercase">
+          {isZh ? "传统规则，现代界面，保留判断力" : "Traditional rules, modern interface, retained judgment"}
+        </p>
+        <h1 className="mt-6 max-w-4xl font-serif text-5xl leading-tight text-balance sm:text-6xl">
+          {isZh
+            ? "先看关系、自我和当下，再决定怎么行动。"
+            : "Read relationship, self, and timing without handing over your judgment."}
+        </h1>
+        <p className="mt-8 max-w-3xl text-lg leading-8 text-[color:var(--color-muted)]">
+          {isZh
+            ? "FateMirror 用确定性程序完成日期、农历、命卦、六神和方向计算，再把结果整理成适合现实反思的阅读界面。"
+            : "FateMirror uses deterministic code for dates, lunar conversion, palace values, six-deity results, and directions, then presents them in a reflection-friendly interface."}
+        </p>
 
-            <div className="mt-10 flex flex-col gap-4 sm:flex-row">
-              <StartReadingButton
-                locale={locale}
-                source="hero_love_cta"
-                pagePath={`/${locale}`}
-                destinationPath="/reading/love"
-                className="inline-flex items-center justify-center rounded-full bg-[color:var(--color-accent)] px-6 py-3 text-sm font-medium text-[color:var(--color-ink)] transition hover:bg-[color:var(--color-accent-soft)]"
-              >
-                {dict.home.primaryCta}
-              </StartReadingButton>
-              <StartReadingButton
-                locale={locale}
-                source="hero_moment_cta"
-                pagePath={`/${locale}`}
-                destinationPath="/reading/moment"
-                className="inline-flex items-center justify-center rounded-full border border-white/14 px-6 py-3 text-sm font-medium text-[color:var(--color-foreground)] transition hover:border-white/28 hover:bg-white/6"
-              >
-                {dict.home.secondaryCta}
-              </StartReadingButton>
-            </div>
-          </div>
-
-          <div className="grid gap-5">
-            {[
-              {
-                title: dict.shared.categoryLove,
-                description: dict.home.loveDescription,
-                href: "/reading/love",
-                source: "home_love_card",
-              },
-              {
-                title: dict.shared.categoryMoment,
-                description: dict.home.momentDescription,
-                href: "/reading/moment",
-                source: "home_moment_card",
-              },
-              {
-                title: locale === "zh" ? "我的命宫" : "My Ming Gua",
-                description:
-                  locale === "zh"
-                    ? "按公历出生年份和公式性别，计算九宫命格、组别和方向组。"
-                    : "Calculate the palace number, group, and direction set from birth year and formula gender.",
-                href: "/reading/ming-gua",
-                source: "home_ming_gua_card",
-              },
-              {
-                title: locale === "zh" ? "婚配方位" : "Marriage Direction",
-                description:
-                  locale === "zh"
-                    ? "把公历生日转为农历生日，再按月支顺数得到传统方向轴。"
-                    : "Convert the Gregorian birthday to lunar date, then count from the month branch to a direction axis.",
-                href: "/reading/marriage-direction",
-                source: "home_marriage_direction_card",
-              },
-              {
-                title: locale === "zh" ? "关系命宫" : "Ming Gua Match",
-                description:
-                  locale === "zh"
-                    ? "比较双方命宫，展示传统正配、同组匹配或跨组匹配。"
-                    : "Compare two Ming Gua results as traditional pair, same group, or cross group.",
-                href: "/reading/ming-gua-match",
-                source: "home_ming_gua_match_card",
-              },
-            ].map((item) => (
-              <article
-                key={item.title}
-                className="rounded-[2rem] border border-white/10 bg-white/6 p-6 shadow-[0_24px_80px_rgba(4,10,16,0.28)] backdrop-blur-sm"
-              >
-                <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <p className="text-xs tracking-[0.2em] text-[color:var(--color-muted)] uppercase">
-                      {dict.shared.openNow}
-                    </p>
-                    <h2 className="mt-3 font-serif text-3xl leading-tight">
-                      {item.title}
-                    </h2>
-                  </div>
-                  <div className="h-14 w-14 rounded-full border border-white/10 bg-[radial-gradient(circle,_rgba(255,248,235,0.28),_rgba(255,248,235,0.02))]" />
-                </div>
-                <p className="mt-5 text-sm leading-7 text-[color:var(--color-muted)]">
-                  {item.description}
-                </p>
-                <StartReadingButton
-                  locale={locale}
-                  source={item.source}
-                  pagePath={`/${locale}`}
-                  destinationPath={item.href}
-                  className="mt-8 inline-flex text-sm text-[color:var(--color-accent)] transition hover:text-[color:var(--color-accent-soft)]"
-                >
-                  {locale === "zh" ? "进入体验" : "Enter reading"}
-                </StartReadingButton>
-              </article>
-            ))}
-          </div>
+        <div className="mt-10">
+          <StartReadingButton
+            locale={locale}
+            source="home_primary_relationship_cta"
+            pagePath={`/${locale}`}
+            destinationPath="/reading/love"
+            className="inline-flex min-h-11 items-center justify-center rounded-full bg-[color:var(--color-accent)] px-6 py-3 text-sm font-medium text-[color:var(--color-ink)] transition hover:bg-[color:var(--color-accent-soft)]"
+          >
+            {isZh ? "开始关系解读" : "Start relationship reading"}
+          </StartReadingButton>
+          <p className="mt-4 max-w-xl text-sm leading-7 text-[color:var(--color-muted)]">
+            {isZh
+              ? "如果你主要想看两个人的关系走向、匹配方式和现实提醒，就从这里开始。"
+              : "If your main goal is to understand a connection between two people, this is the clearest starting point."}
+          </p>
         </div>
       </section>
 
-      <section className="mx-auto w-full max-w-7xl px-6 py-12 sm:px-8 lg:px-12">
-        <div className="rounded-[2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.03))] p-8 md:flex md:items-end md:justify-between md:gap-10">
-          <div className="max-w-3xl">
-            <p className="text-sm tracking-[0.28em] text-[color:var(--color-accent)] uppercase">
-              {dict.home.differenceEyebrow}
-            </p>
-            <h2 className="mt-4 font-serif text-4xl text-balance">
-              {dict.home.differenceTitle}
-            </h2>
-            <p className="mt-5 text-base leading-8 text-[color:var(--color-muted)]">
-              {dict.home.differenceText}
-            </p>
-          </div>
-          <div className="mt-8 flex flex-col gap-4 md:mt-0">
-            <StartReadingButton
-              locale={locale}
-              source="footer_love_cta"
-              pagePath={`/${locale}`}
-              destinationPath="/reading/love"
-              className="inline-flex items-center justify-center rounded-full bg-[color:var(--color-accent)] px-6 py-3 text-sm font-medium text-[color:var(--color-ink)] transition hover:bg-[color:var(--color-accent-soft)]"
-            >
-              {dict.home.finalCtaLove}
-            </StartReadingButton>
-            <StartReadingButton
-              locale={locale}
-              source="footer_moment_cta"
-              pagePath={`/${locale}`}
-              destinationPath="/reading/moment"
-              className="inline-flex items-center justify-center rounded-full border border-white/14 px-6 py-3 text-sm font-medium text-[color:var(--color-foreground)] transition hover:border-white/28 hover:bg-white/6"
-            >
-              {dict.home.finalCtaMoment}
-            </StartReadingButton>
-          </div>
-        </div>
-      </section>
+      <SectionBand eyebrow={isZh ? "关系解读" : "Relationship"} title={isZh ? "当问题的核心是两个人之间会发生什么" : "When the question is fundamentally about two people"}>
+        <ToolGrid locale={locale} items={relationshipTools} />
+      </SectionBand>
+
+      <SectionBand eyebrow={isZh ? "个人与即时工具" : "Personal & Immediate"} title={isZh ? "当你只想确认自己的命卦，或读一下此刻的节奏" : "When you only need your own profile or a quick read of the moment"}>
+        <ToolGrid locale={locale} items={otherTools} />
+      </SectionBand>
     </main>
+  );
+}
+
+function SectionBand({
+  eyebrow,
+  title,
+  children,
+}: {
+  eyebrow: string;
+  title: string;
+  children: ReactNode;
+}) {
+  return (
+    <section className="py-8">
+      <div className="rounded-[2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.03))] p-8">
+        <p className="text-sm tracking-[0.28em] text-[color:var(--color-accent)] uppercase">{eyebrow}</p>
+        <h2 className="mt-4 max-w-4xl font-serif text-4xl text-balance">{title}</h2>
+        <div className="mt-8">{children}</div>
+      </div>
+    </section>
+  );
+}
+
+function ToolGrid({
+  locale,
+  items,
+}: {
+  locale: string;
+  items: Array<{
+    title: string;
+    description: string;
+    href: string;
+    cta: string;
+    source: string;
+    note?: string;
+  }>;
+}) {
+  return (
+    <div className="grid gap-5 lg:grid-cols-3">
+      {items.map((item) => (
+        <article key={item.title} className="rounded-[1.5rem] border border-white/10 bg-black/10 p-6">
+          {item.note ? (
+            <p className="text-xs tracking-[0.2em] text-[color:var(--color-muted)] uppercase">
+              {item.note}
+            </p>
+          ) : null}
+          <h3 className="mt-3 font-serif text-3xl leading-tight">{item.title}</h3>
+          <p className="mt-5 text-sm leading-7 text-[color:var(--color-muted)]">{item.description}</p>
+          <StartReadingButton
+            locale={locale as "en" | "zh"}
+            source={item.source}
+            pagePath={`/${locale}`}
+            destinationPath={item.href}
+            className="mt-8 inline-flex min-h-11 items-center rounded-full border border-white/14 px-5 py-2.5 text-sm font-medium text-[color:var(--color-foreground)] transition hover:border-white/28 hover:bg-white/6"
+          >
+            {item.cta}
+          </StartReadingButton>
+        </article>
+      ))}
+    </div>
   );
 }

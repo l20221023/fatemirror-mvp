@@ -3,36 +3,29 @@ import { NextResponse } from "next/server";
 import {
   calculateMingGua,
   calculateMingGuaMatch,
-  normalizeGender,
 } from "../../../../lib/ming-gong";
+import { createErrorResponse, createSuccessResponse } from "../../../../lib/readings/api-response";
+import { mapErrorToReadingError } from "../../../../lib/readings/errors";
+import { createMethodMeta } from "../../../../lib/readings/meta";
+import { MingGuaMatchRequestSchema } from "../../../../lib/readings/schemas/ming-gua-match";
 
 export async function POST(request: Request) {
   const body = await request.json().catch(() => null);
 
   try {
-    if (!body || typeof body !== "object") throw new Error("INVALID_INPUT");
-    const input = body as Record<string, unknown>;
-    const personA = readPerson(input.personA);
-    const personB = readPerson(input.personB);
+    const input = MingGuaMatchRequestSchema.parse(body);
     const result = calculateMingGuaMatch(
-      calculateMingGua(personA),
-      calculateMingGua(personB),
+      calculateMingGua(input.personA),
+      calculateMingGua(input.personB),
     );
 
-    return NextResponse.json({ ok: true, result });
+    return NextResponse.json(
+      createSuccessResponse(result, createMethodMeta("ming-gua-match")),
+    );
   } catch (error) {
     return NextResponse.json(
-      { ok: false, error: error instanceof Error ? error.message : "INVALID_INPUT" },
+      createErrorResponse(mapErrorToReadingError(error)),
       { status: 400 },
     );
   }
-}
-
-function readPerson(value: unknown) {
-  if (!value || typeof value !== "object") throw new Error("INVALID_PERSON");
-  const person = value as Record<string, unknown>;
-  return {
-    birthYear: Number(person.birthYear),
-    gender: normalizeGender(String(person.gender)),
-  };
 }

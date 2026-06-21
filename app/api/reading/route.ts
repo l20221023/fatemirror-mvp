@@ -1,84 +1,82 @@
 import { NextResponse } from "next/server";
+import { z } from "zod";
 
 import { hasLocale } from "../../../lib/i18n";
 import { generateReadingText } from "../../../lib/openai";
-import type { MarriageDirectionResult } from "../../../lib/marriage-direction";
-import type { XiaoLiuRenResult } from "../../../lib/xiaoliu-ren";
+import type { LoveInterpretationFacts, MomentInterpretationFacts } from "../../../lib/readings/interpretation/local-templates";
+
+const LoveFactsSchema = z.object({
+  method: z.literal("ming-gua-match"),
+  personA: z.object({
+    palaceNumber: z.number().int(),
+    trigram: z.string(),
+    groupLabel: z.string(),
+  }),
+  personB: z.object({
+    palaceNumber: z.number().int(),
+    trigram: z.string(),
+    groupLabel: z.string(),
+  }),
+  matchType: z.enum(["traditional-best-pair", "same-group", "cross-group"]),
+  matchLabel: z.string(),
+  matchSummary: z.string(),
+  relationshipStage: z.string().optional(),
+  question: z.string().optional(),
+});
+
+const MomentFactsSchema = z.object({
+  method: z.literal("xiaoliu-ren"),
+  deityKey: z.enum(["da-an", "liu-lian", "su-xi", "chi-kou", "xiao-ji", "kong-wang"]),
+  deityName: z.string(),
+  summary: z.string(),
+  action: z.string(),
+  occurredAtLabel: z.string(),
+  question: z.string().optional(),
+});
+
+const RequestSchema = z.discriminatedUnion("readingType", [
+  z.object({
+    locale: z.enum(["zh", "en"]),
+    layer: z.enum(["free", "paid"]),
+    readingType: z.literal("love"),
+    facts: LoveFactsSchema,
+  }),
+  z.object({
+    locale: z.enum(["zh", "en"]),
+    layer: z.enum(["free", "paid"]),
+    readingType: z.literal("moment"),
+    facts: MomentFactsSchema,
+  }),
+]);
 
 export async function POST(request: Request) {
-  const body = (await request.json().catch(() => null)) as
-    | {
-        locale?: string;
-        layer?: "free" | "paid";
-        readingType?: "love" | "moment";
-        userInput?: {
-          name?: string;
-          birthDate?: string;
-          relationshipStage?: string;
-          momentTime?: string;
-          question?: string;
-        };
-        computedResults?: {
-          loveCompatibility?: {
-            yourPalace: string;
-            theirPalace: string;
-            matchHeadline: string;
-            matchNote: string;
-          };
-          xiaoLiuRen?: XiaoLiuRenResult;
-          marriageDirection?: MarriageDirectionResult;
-        };
-      }
-    | null;
+  const body = await request.json().catch(() => null);
+  const parsed = RequestSchema.safeParse(body);
 
-  if (!body || !hasLocale(body.locale || "") || !body.layer || !body.readingType) {
-    return NextResponse.json({ ok: false }, { status: 400 });
+  if (!parsed.success || !hasLocale(parsed.data.locale)) {
+    return NextResponse.json(
+      { success: false, message: "Invalid interpretation request." },
+      { status: 400 },
+    );
   }
 
-  const locale = body.locale as "en" | "zh";
-  const layer = body.layer as "free" | "paid";
-
-  if (body.readingType === "love") {
-    if (!body.userInput?.birthDate || !body.computedResults?.loveCompatibility) {
-      return NextResponse.json({ ok: false }, { status: 400 });
-    }
-
+  if (parsed.data.readingType === "love") {
     const text = await generateReadingText({
-      locale,
-      layer,
+      locale: parsed.data.locale,
+      layer: parsed.data.layer,
       readingType: "love",
-      userInput: {
-        name: body.userInput.name,
-        birthDate: body.userInput.birthDate,
-        question: body.userInput.question,
-        relationshipStage: body.userInput.relationshipStage,
-      },
-      computedResults: {
-        loveCompatibility: body.computedResults.loveCompatibility,
-      },
+      facts: parsed.data.facts as LoveInterpretationFacts,
     });
 
-    return NextResponse.json({ ok: true, text });
-  }
-
-  if (!body.userInput?.momentTime || !body.computedResults?.xiaoLiuRen) {
-    return NextResponse.json({ ok: false }, { status: 400 });
+    return NextResponse.json({ success: true, text });
   }
 
   const text = await generateReadingText({
-    locale,
-    layer,
+    locale: parsed.data.locale,
+    layer: parsed.data.layer,
     readingType: "moment",
-    userInput: {
-      name: body.userInput.name,
-      momentTime: body.userInput.momentTime,
-      question: body.userInput.question,
-    },
-    computedResults: {
-      xiaoLiuRen: body.computedResults.xiaoLiuRen,
-      marriageDirection: body.computedResults.marriageDirection,
-    },
+    facts: parsed.data.facts as MomentInterpretationFacts,
   });
 
-  return NextResponse.json({ ok: true, text });
+  return NextResponse.json({ success: true, text });
 }

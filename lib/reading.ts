@@ -2,6 +2,7 @@ import { calculateMingGong, calculateMingGongMatch, parseGender } from "./ming-g
 import { generateReadingText } from "./openai";
 import type { Locale } from "./i18n";
 import { stageLabel } from "./i18n";
+import type { LoveInterpretationFacts, MomentInterpretationFacts } from "./readings/interpretation/local-templates";
 import { getReadingRecord, saveReadingAnalysis } from "./reading-store";
 import type { JsonValue } from "./supabase";
 import { calculateXiaoLiuRen } from "./xiaoliu-ren";
@@ -146,6 +147,24 @@ export async function buildLoveReadingExperience(
     calculateMingGongMatch(you, counterpart),
     locale,
   );
+  const loveFacts: LoveInterpretationFacts = {
+    method: "ming-gua-match",
+    personA: {
+      palaceNumber: you.palaceNumber,
+      trigram: you.palaceName,
+      groupLabel: "",
+    },
+    personB: {
+      palaceNumber: counterpart.palaceNumber,
+      trigram: counterpart.palaceName,
+      groupLabel: "",
+    },
+    matchType: compatibility.deterministicLevel,
+    matchLabel: compatibility.headline,
+    matchSummary: compatibility.note,
+    relationshipStage: stageLabel(input.relationshipStage, locale),
+    question: input.heartQuestion || undefined,
+  };
   const readingRecord = await getReadingRecord(input.readingId || null);
   const freeReadingText =
     readingRecord?.ai_free ||
@@ -153,20 +172,7 @@ export async function buildLoveReadingExperience(
       locale,
       layer: "free",
       readingType: "love",
-      userInput: {
-        name: input.name || undefined,
-        birthDate: input.birthDate,
-        question: input.heartQuestion || undefined,
-        relationshipStage: stageLabel(input.relationshipStage, locale),
-      },
-      computedResults: {
-        loveCompatibility: {
-          yourPalace: you.displayLabel,
-          theirPalace: counterpart.displayLabel,
-          matchHeadline: compatibility.headline,
-          matchNote: compatibility.note,
-        },
-      },
+      facts: loveFacts,
     }));
   const paidReadingText = isPaid
     ? readingRecord?.ai_paid ||
@@ -174,20 +180,7 @@ export async function buildLoveReadingExperience(
         locale,
         layer: "paid",
         readingType: "love",
-        userInput: {
-          name: input.name || undefined,
-          birthDate: input.birthDate,
-          question: input.heartQuestion || undefined,
-          relationshipStage: stageLabel(input.relationshipStage, locale),
-        },
-        computedResults: {
-          loveCompatibility: {
-            yourPalace: you.displayLabel,
-            theirPalace: counterpart.displayLabel,
-            matchHeadline: compatibility.headline,
-            matchNote: compatibility.note,
-          },
-        },
+        facts: loveFacts,
       }))
     : null;
 
@@ -237,6 +230,15 @@ export async function buildMomentReadingExperience(
   isPaid: boolean,
 ): Promise<MomentReadingExperience> {
   const xiaoLiuRen = calculateXiaoLiuRen(new Date(input.momentIso), input.momentLocal);
+  const momentFacts: MomentInterpretationFacts = {
+    method: "xiaoliu-ren",
+    deityKey: xiaoLiuRen.deityKey,
+    deityName: xiaoLiuRen.deity,
+    summary: xiaoLiuRen.meaning,
+    action: xiaoLiuRen.advice,
+    occurredAtLabel: input.momentLocal || input.momentIso,
+    question: input.heartQuestion || undefined,
+  };
   const readingRecord = await getReadingRecord(input.readingId || null);
   const freeReadingText =
     readingRecord?.ai_free ||
@@ -244,14 +246,7 @@ export async function buildMomentReadingExperience(
       locale,
       layer: "free",
       readingType: "moment",
-      userInput: {
-        name: input.name || undefined,
-        momentTime: input.momentLocal || input.momentIso,
-        question: input.heartQuestion || undefined,
-      },
-      computedResults: {
-        xiaoLiuRen,
-      },
+      facts: momentFacts,
     }));
   const paidReadingText = isPaid
     ? readingRecord?.ai_paid ||
@@ -259,14 +254,7 @@ export async function buildMomentReadingExperience(
         locale,
         layer: "paid",
         readingType: "moment",
-        userInput: {
-          name: input.name || undefined,
-          momentTime: input.momentLocal || input.momentIso,
-          question: input.heartQuestion || undefined,
-        },
-        computedResults: {
-          xiaoLiuRen,
-        },
+        facts: momentFacts,
       }))
     : null;
 
@@ -347,6 +335,7 @@ function localizeLoveCompatibility(
     score: match.score,
     headline,
     note,
+    deterministicLevel: match.deterministicLevel,
   };
 }
 

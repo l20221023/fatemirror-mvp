@@ -1,6 +1,10 @@
 import type { Locale } from "./i18n";
 import { getSupabaseServerClient, type JsonValue } from "./supabase";
 
+function isPersistenceEnabled() {
+  return process.env.ENABLE_READING_PERSISTENCE === "true";
+}
+
 export type ReadingRecord = {
   id: string;
   session_id: string;
@@ -23,6 +27,10 @@ type CreateReadingInput = {
 };
 
 export async function touchSession(sessionId: string, locale: Locale) {
+  if (!isPersistenceEnabled()) {
+    return;
+  }
+
   const supabase = getSupabaseServerClient();
 
   if (!supabase) {
@@ -49,6 +57,10 @@ export async function createReadingRecord({
   readingType,
   userInput,
 }: CreateReadingInput) {
+  if (!isPersistenceEnabled()) {
+    return null;
+  }
+
   const supabase = getSupabaseServerClient();
 
   if (!supabase) {
@@ -76,6 +88,10 @@ export async function createReadingRecord({
 
 export async function getReadingRecord(readingId?: string | null) {
   if (!readingId) {
+    return null;
+  }
+
+  if (!isPersistenceEnabled()) {
     return null;
   }
 
@@ -112,6 +128,10 @@ export async function saveReadingAnalysis({
   aiFree,
   aiPaid,
 }: SaveReadingAnalysisInput) {
+  if (!isPersistenceEnabled()) {
+    return;
+  }
+
   const supabase = getSupabaseServerClient();
 
   if (!supabase) {
