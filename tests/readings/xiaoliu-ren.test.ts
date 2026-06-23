@@ -23,7 +23,7 @@ describe("xiaoliu-ren", () => {
     const result = createXiaoliuRenReading({
       occurredAt: "2026-06-20T15:30:00+08:00",
       timezone: "Asia/Shanghai",
-      question: "这次沟通是否适合今天推进？",
+      question: "Will this move today?",
     });
 
     expect(result.input.questionIncludedInCalculation).toBe(false);

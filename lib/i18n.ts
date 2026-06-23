@@ -1,3 +1,5 @@
+import { getAdviceUiCopy } from "./advice/ui-copy";
+
 export const locales = ["en", "zh"] as const;
 
 export type Locale = (typeof locales)[number];
@@ -287,8 +289,8 @@ export function getDictionary(locale: Locale) {
       unlockButton: "Continue to unlock",
       unlockPageTitle: "Unlock the deeper love layer",
       unlockPageText:
-        "Payment remains a placeholder in this MVP. Use the demo unlock to simulate the deeper love layer during testing.",
-      unlockPageDemo: "Demo unlock this love reading",
+        "Payment remains a placeholder in this MVP. This entry now only enables a non-production preview of the deeper love layer.",
+      unlockPageDemo: "Preview this love reading (non-production)",
     },
     zh: {
       unavailableEyebrow: "暂时无法显示结果",
@@ -356,8 +358,8 @@ export function getDictionary(locale: Locale) {
       unlockButton: "Continue to unlock",
       unlockPageTitle: "Unlock the deeper moment layer",
       unlockPageText:
-        "Payment remains a placeholder in this MVP. Use the demo unlock to simulate the deeper moment layer during testing.",
-      unlockPageDemo: "Demo unlock this moment reading",
+        "Payment remains a placeholder in this MVP. This entry now only enables a non-production preview of the deeper moment layer.",
+      unlockPageDemo: "Preview this moment reading (non-production)",
       currentQuestion: "Current question",
       currentSignal: "Current signal",
     },
@@ -459,5 +461,6 @@ export function getDictionary(locale: Locale) {
     momentResult,
     about,
     disclaimerPage,
+    advice: getAdviceUiCopy(locale),
   };
 }

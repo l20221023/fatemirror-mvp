@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { LanguageSwitcher } from "../../../../components/language-switcher";
 import { LoveReadingResult } from "../../../../components/readings/love-reading-result";
 import { getDictionary, hasLocale } from "../../../../../lib/i18n";
+import { readPreviewUnlockFlag } from "../../../../../lib/preview-unlock";
 
 type LocalizedLoveResultPageProps = PageProps<"/[locale]/reading/love/result">;
 
@@ -13,7 +14,7 @@ export default async function LocalizedLoveResultPage(props: LocalizedLoveResult
 
   const searchParams = await props.searchParams;
   const sid = typeof searchParams.sid === "string" ? searchParams.sid : "";
-  const isPaid = searchParams.paid === "1";
+  const isPaid = readPreviewUnlockFlag(searchParams.preview);
   const dict = getDictionary(locale);
 
   return (
@@ -23,7 +24,7 @@ export default async function LocalizedLoveResultPage(props: LocalizedLoveResult
           {dict.shared.brand}
         </Link>
         <div className="flex flex-wrap items-center justify-end gap-3">
-          <LanguageSwitcher locale={locale} pathSuffix="/reading/love/result" queryString={sid ? `sid=${sid}${isPaid ? "&paid=1" : ""}` : undefined} />
+          <LanguageSwitcher locale={locale} pathSuffix="/reading/love/result" queryString={sid ? `sid=${sid}${isPaid ? "&preview=1" : ""}` : undefined} />
           <Link href={`/${locale}`} className="text-sm text-[color:var(--color-muted)] transition hover:text-[color:var(--color-foreground)]">
             {dict.shared.navHome}
           </Link>

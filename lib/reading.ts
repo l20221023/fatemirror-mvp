@@ -7,6 +7,10 @@ import { getReadingRecord, saveReadingAnalysis } from "./reading-store";
 import type { JsonValue } from "./supabase";
 import { calculateXiaoLiuRen } from "./xiaoliu-ren";
 
+/**
+ * @deprecated Legacy compatibility module retained for old reading flows.
+ * New code should use `app/api/readings/*` plus the direct rule modules instead.
+ */
 export type LoveReadingInput = {
   name: string;
   gender: string;
@@ -86,6 +90,7 @@ const defaultLoveTheme = {
   tones: { en: "quiet uncertainty", zh: "安静但未完全落定" },
 };
 
+/** @deprecated Legacy compatibility helper. */
 export function readLoveInputFromSearchParams(
   searchParams: Record<string, string | string[] | undefined>,
 ): LoveReadingInput {
@@ -101,6 +106,7 @@ export function readLoveInputFromSearchParams(
   };
 }
 
+/** @deprecated Legacy compatibility helper. */
 export function readMomentInputFromSearchParams(
   searchParams: Record<string, string | string[] | undefined>,
 ): MomentReadingInput {
@@ -113,6 +119,7 @@ export function readMomentInputFromSearchParams(
   };
 }
 
+/** @deprecated Legacy compatibility helper. */
 export function hasCompleteLoveReadingInput(input: LoveReadingInput) {
   return Boolean(
     input.birthDate &&
@@ -124,10 +131,12 @@ export function hasCompleteLoveReadingInput(input: LoveReadingInput) {
   );
 }
 
+/** @deprecated Legacy compatibility helper. */
 export function hasCompleteMomentReadingInput(input: MomentReadingInput) {
   return Boolean(input.heartQuestion && input.momentIso && input.momentLocal);
 }
 
+/** @deprecated Legacy compatibility builder. */
 export async function buildLoveReadingExperience(
   input: LoveReadingInput,
   locale: Locale,
@@ -224,6 +233,7 @@ export async function buildLoveReadingExperience(
   };
 }
 
+/** @deprecated Legacy compatibility builder. */
 export async function buildMomentReadingExperience(
   input: MomentReadingInput,
   locale: Locale,

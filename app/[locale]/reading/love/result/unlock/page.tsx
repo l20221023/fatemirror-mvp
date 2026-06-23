@@ -42,7 +42,7 @@ export default async function UnlockPage(props: UnlockPageProps) {
             : dict.loveResult.unlockPageText}
         </p>
         <Link
-          href={`/${locale}/reading/love/result?sid=${sid}&paid=1`}
+          href={`/${locale}/reading/love/result?sid=${sid}&preview=1`}
           className="mt-10 inline-flex rounded-full bg-[color:var(--color-accent)] px-6 py-3 text-sm font-medium text-[color:var(--color-ink)]"
         >
           {locale === "zh" ? "返回完整结果" : dict.loveResult.unlockPageDemo}

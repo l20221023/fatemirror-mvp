@@ -11,6 +11,10 @@ const requiredFields = ["heartQuestion"] as const;
 
 const optionalFields = ["name", "momentIso", "momentLocal"] as const;
 
+/**
+ * @deprecated Legacy server-action compatibility entrypoint.
+ * Route new submissions through localized routes and API handlers instead.
+ */
 export async function submitMomentReading(formData: FormData) {
   const sessionId = await getOrCreateSessionId();
   const requestedLocale = formData.get("locale")?.toString().trim() ?? "";
@@ -67,6 +71,10 @@ export async function submitMomentReading(formData: FormData) {
   redirect(`/${locale}/reading/moment/result?${params.toString()}`);
 }
 
+/**
+ * @deprecated Legacy server-action compatibility entrypoint.
+ * Route new unlock flows through localized routes only.
+ */
 export async function joinMomentWaitlist(formData: FormData) {
   const sessionId = await getOrCreateSessionId();
   const requestedLocale = formData.get("locale")?.toString().trim() ?? "";

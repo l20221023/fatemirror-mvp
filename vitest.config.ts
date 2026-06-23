@@ -8,6 +8,7 @@ export default defineConfig({
       provider: "v8",
       reporter: ["text", "html"],
       include: [
+        "lib/advice/**/*.ts",
         "lib/lunar-converter.ts",
         "lib/xiaoliu-ren.ts",
         "lib/ming-gong.ts",

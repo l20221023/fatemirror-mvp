@@ -19,6 +19,10 @@ const optionalFields = [
   "name",
 ] as const;
 
+/**
+ * @deprecated Legacy server-action compatibility entrypoint.
+ * Route new submissions through localized routes and API handlers instead.
+ */
 export async function submitLoveReading(formData: FormData) {
   const sessionId = await getOrCreateSessionId();
   const requestedLocale = formData.get("locale")?.toString().trim() ?? "";
@@ -80,6 +84,10 @@ export async function submitLoveReading(formData: FormData) {
   redirect(`/${locale}/reading/love/result?${params.toString()}`);
 }
 
+/**
+ * @deprecated Legacy server-action compatibility entrypoint.
+ * Route new unlock flows through localized routes only.
+ */
 export async function joinWaitlist(formData: FormData) {
   const sessionId = await getOrCreateSessionId();
   const requestedLocale = formData.get("locale")?.toString().trim() ?? "";
