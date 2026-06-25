@@ -1,4 +1,5 @@
-export const ADVICE_ENGINE_VERSION = "0.1.0";
+export const ADVICE_ENGINE_VERSION = "0.3.0";
+export const ADVICE_PROMPT_VERSION = "v0.3.0";
 
 export const ADVICE_LOCALES = ["zh", "en"] as const;
 export type AdviceLocale = (typeof ADVICE_LOCALES)[number];

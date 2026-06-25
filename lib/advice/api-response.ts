@@ -6,6 +6,10 @@ export type AdviceApiResponse =
       success: true;
       data: AdviceReport;
       meta: AdviceMeta;
+      estimatedCost?: number | null;
+      reportId?: string;
+      accessToken?: string;
+      notice?: string | null;
     }
   | {
       success: false;
@@ -15,11 +19,13 @@ export type AdviceApiResponse =
 export function createAdviceSuccessResponse(
   data: AdviceReport,
   meta: AdviceMeta,
+  extras?: { estimatedCost?: number | null; reportId?: string; accessToken?: string; notice?: string | null },
 ): AdviceApiResponse {
   return {
     success: true,
     data,
     meta,
+    ...extras,
   };
 }
 

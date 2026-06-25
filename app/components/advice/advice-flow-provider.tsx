@@ -14,13 +14,14 @@ import type { AdviceMeta, AdviceReport } from "../../../lib/advice/types";
 type AdviceFlowResult = {
   report: AdviceReport;
   meta: AdviceMeta;
+  notice?: string | null;
 };
 
 type AdviceFlowContextValue = {
   draft: AdviceFormDraft | null;
   result: AdviceFlowResult | null;
   setDraft: (draft: AdviceFormDraft) => void;
-  setResult: (report: AdviceReport, meta: AdviceMeta) => void;
+  setResult: (report: AdviceReport, meta: AdviceMeta, notice?: string | null) => void;
   clearReport: () => void;
   reset: () => void;
 };
@@ -36,8 +37,8 @@ export function AdviceFlowProvider({ children }: { children: ReactNode }) {
       draft,
       result,
       setDraft,
-      setResult(report, meta) {
-        setResultState({ report, meta });
+      setResult(report, meta, notice) {
+        setResultState({ report, meta, notice });
       },
       clearReport() {
         setResultState(null);

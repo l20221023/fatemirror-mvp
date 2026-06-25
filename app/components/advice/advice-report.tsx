@@ -2,9 +2,12 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 import type { AdviceUiCopy } from "../../../lib/advice/ui-copy";
+import type { AdviceReport as AdviceReportData } from "../../../lib/advice/types";
 import { buildAdviceResultViewModel } from "../../../lib/advice/view-model";
+import { clearAdviceAccessToken } from "../../../lib/advice/frontend";
 import { ReadingResultShell } from "../readings/reading-result-shell";
 import { useAdviceFlow } from "./advice-flow-provider";
 import { AdviceFeedback } from "./advice-feedback";
@@ -16,14 +19,21 @@ import { TraditionalPerspective } from "./traditional-perspective";
 type AdviceReportProps = {
   locale: "en" | "zh";
   copy: AdviceUiCopy;
+  report?: AdviceReportData | null;
+  reportId?: string | null;
+  accessToken?: string | null;
 };
 
-export function AdviceReport({ locale, copy }: AdviceReportProps) {
+export function AdviceReport({ locale, copy, report: reportProp, reportId, accessToken }: AdviceReportProps) {
   const router = useRouter();
   const flow = useAdviceFlow();
   const result = flow.result;
+  const [deleteStage, setDeleteStage] = useState<0 | 1 | 2>(0);
 
-  if (!result) {
+  const report = reportProp ?? result?.report;
+  const notice = result?.notice ?? null;
+
+  if (!report) {
     return (
       <div className="rounded-[2rem] border border-white/10 bg-white/5 p-8 text-center">
         <h2 className="font-serif text-4xl">{copy.page.resultMissingTitle}</h2>
@@ -40,28 +50,48 @@ export function AdviceReport({ locale, copy }: AdviceReportProps) {
     );
   }
 
-  const { report } = result;
   const viewModel = buildAdviceResultViewModel(
     report,
     copy.result.statusLabels,
     copy.result.statusDescriptions,
   );
   const traditionalPerspective =
-    report.extendedAdvice?.traditionalPerspective ??
-    report.localAdvice.summary.traditionalPerspective;
+    report.extendedAdvice?.traditionalPerspective ?? report.localAdvice.summary.traditionalPerspective;
+
+  async function submitDelete() {
+    if (!reportId || !accessToken) return;
+
+    try {
+      const response = await fetch(`/api/advice/reports/${reportId}`, {
+        method: "DELETE",
+        headers: {
+          "x-advice-access-token": accessToken,
+        },
+      });
+
+      if (!response.ok) {
+        setDeleteStage(0);
+        return;
+      }
+
+      clearAdviceAccessToken(reportId);
+      flow.reset();
+      router.push(`/${locale}/reading/advice`);
+    } catch {
+      setDeleteStage(0);
+    }
+  }
 
   return (
     <div className="space-y-8">
-      <ReadingResultShell
-        eyebrow={copy.page.eyebrow}
-        title={report.display.headline}
-        summary={report.display.situation}
-      >
-        <GenerationStatus
-          title={copy.result.generationTitle}
-          label={viewModel.statusLabel}
-          description={viewModel.statusDescription}
-        />
+      {notice ? (
+        <div className="rounded-[1.25rem] border border-[color:rgba(196,155,98,0.28)] bg-[rgba(196,155,98,0.08)] p-4 text-sm leading-7 text-[color:var(--color-foreground)]">
+          {notice}
+        </div>
+      ) : null}
+
+      <ReadingResultShell eyebrow={copy.page.eyebrow} title={report.display.headline} summary={report.display.situation}>
+        <GenerationStatus title={copy.result.generationTitle} label={viewModel.statusLabel} description={viewModel.statusDescription} />
 
         <FactBoundaries
           title={copy.result.factsTitle}
@@ -97,14 +127,10 @@ export function AdviceReport({ locale, copy }: AdviceReportProps) {
           />
         ) : (
           <section className="rounded-[1.5rem] border border-white/10 bg-black/10 p-6">
-            <p className="text-sm text-[color:var(--color-muted)]">
-              {copy.result.actionAdviceTitle}
-            </p>
+            <p className="text-sm text-[color:var(--color-muted)]">{copy.result.actionAdviceTitle}</p>
 
             <article className="mt-5 rounded-[1.25rem] border border-white/8 bg-white/4 p-4">
-              <h3 className="text-sm text-[color:var(--color-foreground)]">
-                {copy.result.localGuidanceTitle}
-              </h3>
+              <h3 className="text-sm text-[color:var(--color-foreground)]">{copy.result.localGuidanceTitle}</h3>
               <AdviceGuidanceBlock
                 nextStepsTitle={copy.result.nextSteps}
                 boundariesTitle={copy.result.boundaries}
@@ -125,9 +151,7 @@ export function AdviceReport({ locale, copy }: AdviceReportProps) {
                 <p className="mt-3 text-xs leading-6 text-[color:var(--color-muted)]">
                   {copy.result.aiBadgeHint}
                 </p>
-                <h3 className="mt-4 text-sm text-[color:var(--color-foreground)]">
-                  {copy.result.aiGuidanceTitle}
-                </h3>
+                <h3 className="mt-4 text-sm text-[color:var(--color-foreground)]">{copy.result.aiGuidanceTitle}</h3>
                 <p className="mt-3 text-sm leading-7 text-[color:var(--color-muted)]">
                   {report.extendedAdvice.observedSummary}
                 </p>
@@ -160,22 +184,13 @@ export function AdviceReport({ locale, copy }: AdviceReportProps) {
         )}
 
         <div className="flex flex-wrap gap-4 text-sm">
-          <Link
-            href={`/${locale}/methodology`}
-            className="text-[color:var(--color-accent)] transition hover:text-[color:var(--color-accent-soft)]"
-          >
+          <Link href={`/${locale}/methodology`} className="text-[color:var(--color-accent)] transition hover:text-[color:var(--color-accent-soft)]">
             {copy.result.links.methodology}
           </Link>
-          <Link
-            href={`/${locale}/privacy`}
-            className="text-[color:var(--color-accent)] transition hover:text-[color:var(--color-accent-soft)]"
-          >
+          <Link href={`/${locale}/privacy`} className="text-[color:var(--color-accent)] transition hover:text-[color:var(--color-accent-soft)]">
             {copy.result.links.privacy}
           </Link>
-          <Link
-            href={`/${locale}/disclaimer`}
-            className="text-[color:var(--color-accent)] transition hover:text-[color:var(--color-accent-soft)]"
-          >
+          <Link href={`/${locale}/disclaimer`} className="text-[color:var(--color-accent)] transition hover:text-[color:var(--color-accent-soft)]">
             {copy.result.links.disclaimer}
           </Link>
         </div>
@@ -201,14 +216,46 @@ export function AdviceReport({ locale, copy }: AdviceReportProps) {
           >
             {copy.result.startOver}
           </button>
+          {reportId && accessToken ? (
+            <button
+              type="button"
+              onClick={() => {
+                if (deleteStage === 0) {
+                  setDeleteStage(1);
+                  return;
+                }
+
+                if (deleteStage === 1) {
+                  setDeleteStage(2);
+                  void submitDelete();
+                }
+              }}
+              className="inline-flex min-h-11 items-center rounded-full border border-white/12 px-6 py-3 text-sm text-[color:var(--color-foreground)] transition hover:border-white/24 hover:bg-white/6"
+            >
+              {deleteStage === 0
+                ? locale === "zh"
+                  ? "删除此报告"
+                  : "Delete this report"
+                : deleteStage === 1
+                  ? locale === "zh"
+                    ? "再点一次确认删除"
+                    : "Click again to confirm"
+                  : locale === "zh"
+                    ? "正在删除..."
+                    : "Deleting..."}
+            </button>
+          ) : null}
         </div>
 
         <AdviceFeedback
+          locale={locale}
           title={copy.feedback.title}
           levels={copy.feedback.levels}
           reasonsLabel={copy.feedback.reasonsLabel}
           reasons={copy.feedback.reasons}
           submitted={copy.feedback.submitted}
+          reportId={reportId}
+          accessToken={accessToken}
         />
       </ReadingResultShell>
     </div>

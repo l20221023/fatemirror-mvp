@@ -10,6 +10,10 @@ import {
   RELATIONSHIP_STAGES,
   SAFETY_FLAG_CODES,
 } from "./types";
+import { getAdviceRuntimeConfig } from "./runtime";
+
+const { maxInputChars } = getAdviceRuntimeConfig();
+const contextMaxChars = maxInputChars * 2;
 
 export const TraditionalSignalSchema = z.object({
   source: z.enum(["ming-gua-match", "xiaoliu-ren", "marriage-direction", "custom"]),
@@ -18,10 +22,10 @@ export const TraditionalSignalSchema = z.object({
 
 export const AdviceInputSchema = z.object({
   locale: z.enum(ADVICE_LOCALES),
-  question: z.string().trim().min(1).max(500),
+  question: z.string().trim().min(1).max(maxInputChars),
   relationshipStage: z.enum(RELATIONSHIP_STAGES),
   primaryConcern: z.enum(PRIMARY_CONCERNS),
-  contextNotes: z.string().trim().max(1000).optional(),
+  contextNotes: z.string().trim().max(contextMaxChars).optional(),
   knownDetails: z.array(z.string().trim().min(1).max(200)).max(12).optional(),
   traditionalSignals: z.array(TraditionalSignalSchema).max(6).optional(),
 });

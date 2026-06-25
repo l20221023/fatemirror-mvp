@@ -51,6 +51,9 @@ export type AdviceFormValidation = {
   >;
 };
 
+const ADVICE_ACCESS_STORAGE_PREFIX = "fatemirror:advice:access:";
+const ADVICE_REPORT_STORAGE_KEY = "fatemirror:advice:last-report";
+
 export function createEmptyAdviceForm(locale: AdviceLocale): AdviceFormDraft {
   return {
     locale,
@@ -64,6 +67,30 @@ export function createEmptyAdviceForm(locale: AdviceLocale): AdviceFormDraft {
     privacyConfirmed: false,
     aiConfirmed: false,
   };
+}
+
+export function saveAdviceAccessToken(reportId: string, accessToken: string) {
+  if (typeof window === "undefined") return;
+  window.sessionStorage.setItem(`${ADVICE_ACCESS_STORAGE_PREFIX}${reportId}`, accessToken);
+  window.sessionStorage.setItem(ADVICE_REPORT_STORAGE_KEY, reportId);
+}
+
+export function readAdviceAccessToken(reportId: string) {
+  if (typeof window === "undefined") return null;
+  return window.sessionStorage.getItem(`${ADVICE_ACCESS_STORAGE_PREFIX}${reportId}`);
+}
+
+export function readLatestAdviceReportId() {
+  if (typeof window === "undefined") return null;
+  return window.sessionStorage.getItem(ADVICE_REPORT_STORAGE_KEY);
+}
+
+export function clearAdviceAccessToken(reportId: string) {
+  if (typeof window === "undefined") return;
+  window.sessionStorage.removeItem(`${ADVICE_ACCESS_STORAGE_PREFIX}${reportId}`);
+  if (window.sessionStorage.getItem(ADVICE_REPORT_STORAGE_KEY) === reportId) {
+    window.sessionStorage.removeItem(ADVICE_REPORT_STORAGE_KEY);
+  }
 }
 
 function trimList(items: string[]) {

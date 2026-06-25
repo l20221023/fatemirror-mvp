@@ -10,6 +10,7 @@ import {
   canAddKnownDetail,
   canAddTraditionalSignal,
   createEmptyAdviceForm,
+  saveAdviceAccessToken,
   postAdviceRequest,
   validateAdviceForm,
 } from "../../../lib/advice";
@@ -115,8 +116,13 @@ export function AdviceForm({ locale, copy }: AdviceFormProps) {
       const response = await postAdviceRequest(payload);
 
       flow.setDraft({ ...draft, locale });
-      flow.setResult(response.data, response.meta);
-      router.push(`/${locale}/reading/advice/result`);
+      flow.setResult(response.data, response.meta, response.notice ?? null);
+      if (response.reportId && response.accessToken) {
+        saveAdviceAccessToken(response.reportId, response.accessToken);
+        router.push(`/${locale}/reading/advice/result/${response.reportId}`);
+      } else {
+        router.push(`/${locale}/reading/advice/result`);
+      }
     } catch (error) {
       const errorCode =
         error instanceof Error && "code" in error

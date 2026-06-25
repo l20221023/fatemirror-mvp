@@ -6,6 +6,8 @@ export type MockAdviceProviderBehavior =
   | "invalid_json"
   | "invalid_schema"
   | "prohibited"
+  | "timeout"
+  | "server_error"
   | "throw";
 
 export class MockAdviceProvider implements AdviceProvider {
@@ -20,6 +22,14 @@ export class MockAdviceProvider implements AdviceProvider {
   async generate(request: AdviceProviderRequest): Promise<AdviceProviderResult> {
     if (this.behavior === "throw") {
       throw new Error("MOCK_PROVIDER_FAILURE");
+    }
+
+    if (this.behavior === "timeout") {
+      throw new Error("ADVICE_AI_TIMEOUT");
+    }
+
+    if (this.behavior === "server_error") {
+      throw new Error("ADVICE_AI_SERVER_ERROR");
     }
 
     if (this.behavior === "invalid_json") {

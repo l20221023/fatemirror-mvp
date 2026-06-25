@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -5,6 +6,13 @@ import { LanguageSwitcher } from "../../components/language-switcher";
 import { getDictionary, hasLocale } from "../../../lib/i18n";
 
 type PrivacyPageProps = PageProps<"/[locale]/privacy">;
+
+export const metadata: Metadata = {
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 
 export default async function PrivacyPage(props: PrivacyPageProps) {
   const { locale } = await props.params;
@@ -46,16 +54,25 @@ export default async function PrivacyPage(props: PrivacyPageProps) {
   return (
     <main className="mx-auto min-h-screen w-full max-w-6xl px-6 py-10 sm:px-8 lg:px-12">
       <div className="mb-10 flex flex-wrap items-center justify-between gap-4">
-        <Link href={`/${locale}`} className="text-sm tracking-[0.28em] text-[color:var(--color-muted)] uppercase">
+        <Link
+          href={`/${locale}`}
+          className="text-sm tracking-[0.28em] text-[color:var(--color-muted)] uppercase"
+        >
           {dict.shared.brand}
         </Link>
         <div className="flex flex-wrap items-center justify-end gap-3">
           <LanguageSwitcher locale={locale} pathSuffix="/privacy" />
-          <Link href={`/${locale}/disclaimer`} className="text-sm text-[color:var(--color-muted)] transition hover:text-[color:var(--color-foreground)]">
-            {dict.shared.navDisclaimer}
+          <Link
+            href={`/${locale}/disclaimer`}
+            className="text-sm text-[color:var(--color-muted)] transition hover:text-[color:var(--color-foreground)]"
+          >
+            {isZh ? "免责声明" : dict.shared.navDisclaimer}
           </Link>
-          <Link href={`/${locale}`} className="text-sm text-[color:var(--color-muted)] transition hover:text-[color:var(--color-foreground)]">
-            {dict.shared.navHome}
+          <Link
+            href={`/${locale}`}
+            className="text-sm text-[color:var(--color-muted)] transition hover:text-[color:var(--color-foreground)]"
+          >
+            {isZh ? "首页" : dict.shared.navHome}
           </Link>
         </div>
       </div>
@@ -65,17 +82,26 @@ export default async function PrivacyPage(props: PrivacyPageProps) {
           {isZh ? "隐私说明" : "Privacy"}
         </p>
         <h1 className="mt-4 font-serif text-5xl text-balance leading-tight">
-          {isZh ? "先把输入边界和存储边界说清楚，再继续做建议生成。" : "Explain input and storage boundaries first, then continue with advice generation."}
+          {isZh
+            ? "先说明输入边界和存储边界，再继续做建议生成。"
+            : "Explain input and storage boundaries first, then continue with advice generation."}
         </h1>
         <p className="mt-6 max-w-4xl text-base leading-8 text-[color:var(--color-muted)]">
-          {isZh ? "这个页面用于说明 Advice 内部测试目前如何处理文本输入、结果显示、AI 扩展和默认存储策略。" : "This page explains how the Advice internal test currently handles text input, result display, AI expansion, and default storage policy."}
+          {isZh
+            ? "这个页面用于说明 Advice 内部测试目前如何处理文本输入、结果展示、AI 扩展和默认存储策略。"
+            : "This page explains how the Advice internal test currently handles text input, result display, AI expansion, and default storage policy."}
         </p>
 
         <div className="mt-10 space-y-6">
           {sections.map((section) => (
-            <article key={section.title} className="rounded-[1.5rem] border border-white/10 bg-black/10 p-6">
+            <article
+              key={section.title}
+              className="rounded-[1.5rem] border border-white/10 bg-black/10 p-6"
+            >
               <h2 className="font-serif text-3xl">{section.title}</h2>
-              <p className="mt-4 text-base leading-8 text-[color:var(--color-muted)]">{section.text}</p>
+              <p className="mt-4 text-base leading-8 text-[color:var(--color-muted)]">
+                {section.text}
+              </p>
             </article>
           ))}
         </div>

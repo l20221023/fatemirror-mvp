@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 
+import { ADVICE_ENGINE_VERSION } from "../../lib/advice/types";
 import { ExtendedAdviceResultSchema } from "../../lib/advice/schemas";
 import { parseAndValidateExtendedAdvice } from "../../lib/advice/validators/output-validator";
 
@@ -7,7 +8,7 @@ describe("extended advice output schema", () => {
   it("accepts valid structured JSON", () => {
     const json = JSON.stringify({
       kind: "extended-advice",
-      version: "0.1.0",
+      version: ADVICE_ENGINE_VERSION,
       observedSummary: "The current pattern is uneven but observable.",
       assumptionBoundary: "Some meanings are still assumptions.",
       traditionalPerspective: ["Use traditional signals only as context."],

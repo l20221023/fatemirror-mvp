@@ -1,5 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
 
+import { isProductionLikeEnvironment } from "./runtime/environment";
+
 export type JsonValue =
   | string
   | number
@@ -32,16 +34,50 @@ export type WaitlistInsert = {
 
 export function isSupabaseConfigured() {
   return Boolean(
-    process.env.SUPABASE_URL && process.env.SUPABASE_ANON_KEY,
+    process.env.SUPABASE_URL &&
+      (process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY),
   );
 }
 
 export function getSupabaseServerClient() {
-  if (!isSupabaseConfigured()) {
+  const url = process.env.SUPABASE_URL;
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const anonKey = process.env.SUPABASE_ANON_KEY;
+
+  if (!url) {
     return null;
   }
 
-  return createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_ANON_KEY!, {
+  if (serviceRoleKey) {
+    return createClient(url, serviceRoleKey, {
+      auth: {
+        persistSession: false,
+        autoRefreshToken: false,
+      },
+    });
+  }
+
+  if (!isProductionLikeEnvironment() && anonKey) {
+    return createClient(url, anonKey, {
+      auth: {
+        persistSession: false,
+        autoRefreshToken: false,
+      },
+    });
+  }
+
+  return null;
+}
+
+export function getSupabaseAdminClient() {
+  const url = process.env.SUPABASE_URL;
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+  if (!url || !serviceRoleKey) {
+    return null;
+  }
+
+  return createClient(url, serviceRoleKey, {
     auth: {
       persistSession: false,
       autoRefreshToken: false,

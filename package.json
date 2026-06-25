@@ -10,7 +10,17 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "test:legacy": "node scripts/run-reading-engine-tests.mjs"
+    "test:legacy": "node scripts/run-reading-engine-tests.mjs",
+    "evaluate:advice": "node scripts/evaluate-advice.mjs --mode=mock",
+    "evaluate:advice:mock": "node scripts/evaluate-advice.mjs --mode=mock",
+    "evaluate:advice:live": "node scripts/evaluate-advice.mjs --mode=live",
+    "evaluate:advice:report": "node scripts/evaluate-advice.mjs --mode=report",
+    "beta:invites:batch": "node scripts/create-beta-invite-batch.mjs",
+    "cleanup:expired-reports": "node scripts/cleanup-expired-reports.mjs --apply",
+    "cleanup:expired-reports:dry-run": "node scripts/cleanup-expired-reports.mjs --dry-run",
+    "cleanup:expired-reports:apply": "node scripts/cleanup-expired-reports.mjs --apply",
+    "verify:deployment": "node scripts/verify-deployment.mjs",
+    "verify:deployment:local": "node scripts/verify-deployment.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.106.2",

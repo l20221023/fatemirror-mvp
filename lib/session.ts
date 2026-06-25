@@ -4,7 +4,14 @@ const SESSION_COOKIE_NAME = "fm_session";
 const SESSION_MAX_AGE_SECONDS = 60 * 60 * 24 * 180;
 
 export async function getOrCreateSessionId() {
-  const cookieStore = await cookies();
+  let cookieStore: Awaited<ReturnType<typeof cookies>> | null = null;
+
+  try {
+    cookieStore = await cookies();
+  } catch {
+    return crypto.randomUUID();
+  }
+
   const existingSession = cookieStore.get(SESSION_COOKIE_NAME)?.value;
 
   if (existingSession) {

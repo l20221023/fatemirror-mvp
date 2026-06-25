@@ -15,12 +15,6 @@ type OpenAIClientLike = {
   };
 };
 
-function createTimeoutPromise(timeoutMs: number) {
-  return new Promise<never>((_, reject) => {
-    setTimeout(() => reject(new Error("ADVICE_AI_TIMEOUT")), timeoutMs);
-  });
-}
-
 export class OpenAIAdviceProvider implements AdviceProvider {
   readonly name = "openai" as const;
   private readonly client: OpenAIClientLike | null;
@@ -38,33 +32,44 @@ export class OpenAIAdviceProvider implements AdviceProvider {
       throw new Error("ADVICE_AI_UNAVAILABLE");
     }
 
-    const response = await Promise.race([
-      this.client.responses.create({
+    let timeoutId: ReturnType<typeof setTimeout> | null = null;
+    const timeoutPromise = new Promise<never>((_, reject) => {
+      timeoutId = setTimeout(() => reject(new Error("ADVICE_AI_TIMEOUT")), request.timeoutMs);
+    });
+
+    try {
+      const response = await Promise.race([
+        this.client.responses.create({
+          model: request.model,
+          input: [
+            {
+              role: "system",
+              content: [{ type: "input_text", text: request.prompt.system }],
+            },
+            {
+              role: "user",
+              content: [{ type: "input_text", text: request.prompt.user }],
+            },
+          ],
+          max_output_tokens: request.maxOutputTokens,
+        }),
+        timeoutPromise,
+      ]);
+
+      const content = response.output_text?.trim();
+      if (!content) {
+        throw new Error("ADVICE_AI_EMPTY_RESPONSE");
+      }
+
+      return {
+        provider: this.name,
         model: request.model,
-        input: [
-          {
-            role: "system",
-            content: [{ type: "input_text", text: request.prompt.system }],
-          },
-          {
-            role: "user",
-            content: [{ type: "input_text", text: request.prompt.user }],
-          },
-        ],
-        max_output_tokens: request.maxOutputTokens,
-      }),
-      createTimeoutPromise(request.timeoutMs),
-    ]);
-
-    const content = response.output_text?.trim();
-    if (!content) {
-      throw new Error("ADVICE_AI_EMPTY_RESPONSE");
+        content,
+      };
+    } finally {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
     }
-
-    return {
-      provider: this.name,
-      model: request.model,
-      content,
-    };
   }
 }

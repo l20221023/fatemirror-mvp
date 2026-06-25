@@ -1,10 +1,18 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { POST } from "../../app/api/advice/generate/route";
+import { resetAdviceControlState } from "../../lib/advice/controls";
+import { resetAdviceRateLimitState } from "../../lib/advice/rate-limit";
+import { resetAdviceDailyUsageState } from "../../lib/advice/usage";
+import { resetMemoryAdviceReportRepository } from "../../lib/advice/repository/memory-advice-report-repository";
 
 describe("advice api route", () => {
   afterEach(() => {
     vi.unstubAllEnvs();
+    resetAdviceRateLimitState();
+    resetAdviceControlState();
+    resetAdviceDailyUsageState();
+    resetMemoryAdviceReportRepository();
   });
 
   it("returns 400 for invalid input", async () => {

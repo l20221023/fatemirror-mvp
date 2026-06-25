@@ -1,8 +1,13 @@
 import Link from "next/link";
+import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 
 import { AdviceForm } from "../../../components/advice/advice-form";
+import { BetaAccessPanel } from "../../../components/advice/beta-access-panel";
+import { CommercialUpgradeCard } from "../../../components/commercial/commercial-upgrade-card";
 import { LanguageSwitcher } from "../../../components/language-switcher";
+import { isBetaAccessGrantedFromCookieStore } from "../../../../lib/beta-access/server";
+import { getAdviceRuntimeConfig } from "../../../../lib/advice/runtime";
 import { getDictionary, hasLocale } from "../../../../lib/i18n";
 
 type LocalizedAdvicePageProps = PageProps<"/[locale]/reading/advice">;
@@ -15,6 +20,9 @@ export default async function LocalizedAdvicePage(
 
   const dict = getDictionary(locale);
   const { advice } = dict;
+  const betaAccessGranted = isBetaAccessGrantedFromCookieStore(await cookies());
+  const { betaEnabled, commercialEnabled } = getAdviceRuntimeConfig();
+  const isZh = locale === "zh";
 
   return (
     <main className="mx-auto w-full max-w-6xl px-6 py-10 sm:px-8 lg:px-12">
@@ -31,13 +39,13 @@ export default async function LocalizedAdvicePage(
             href={`/${locale}/methodology`}
             className="text-sm text-[color:var(--color-muted)] transition hover:text-[color:var(--color-foreground)]"
           >
-            {locale === "zh" ? "方法说明" : "Methodology"}
+            {isZh ? "方法说明" : "Methodology"}
           </Link>
           <Link
             href={`/${locale}`}
             className="text-sm text-[color:var(--color-muted)] transition hover:text-[color:var(--color-foreground)]"
           >
-            {dict.shared.navHome}
+            {isZh ? "首页" : dict.shared.navHome}
           </Link>
         </div>
       </div>
@@ -68,6 +76,22 @@ export default async function LocalizedAdvicePage(
               </div>
             ))}
           </div>
+          <div className="mt-8">
+            <BetaAccessPanel
+              enabled={betaEnabled}
+              verified={betaAccessGranted}
+              label={isZh ? "Beta 访问码" : "Beta access code"}
+              placeholder={
+                isZh ? "输入邀请码或测试访问码" : "Enter invite or test access code"
+              }
+              submitLabel={isZh ? "验证" : "Verify"}
+              successLabel={isZh ? "Beta 访问已启用" : "Beta access enabled"}
+              invalidLabel={
+                isZh ? "访问码无效或 Beta 未开启" : "Invalid code or beta is disabled"
+              }
+            />
+          </div>
+          {commercialEnabled ? <CommercialUpgradeCard locale={locale} /> : null}
         </section>
 
         <AdviceForm locale={locale} copy={advice} />

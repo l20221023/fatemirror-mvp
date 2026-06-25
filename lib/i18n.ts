@@ -48,9 +48,9 @@ export function serializeSearchParams(
 export function stageLabel(stage: string, locale: Locale) {
   const labels: Record<RelationshipStage, { en: string; zh: string }> = {
     "just-met": { en: "Just met", zh: "刚认识" },
-    dating: { en: "Dating", zh: "暧昧 / 约会中" },
-    relationship: { en: "In a relationship", zh: "稳定关系中" },
-    separation: { en: "In separation", zh: "分开 / 冷淡期" },
+    dating: { en: "Dating", zh: "暧昧 / 约会" },
+    relationship: { en: "In a relationship", zh: "稳定关系" },
+    separation: { en: "In separation", zh: "分开 / 冷淡" },
     complicated: { en: "It's complicated", zh: "关系复杂" },
   };
 
@@ -79,15 +79,15 @@ export function getDictionary(locale: Locale) {
     },
     zh: {
       brand: "FateMirror",
-      categoryLove: "Love & Connection Reading",
-      categoryMoment: "Moment Reading",
+      categoryLove: "情感关系解读",
+      categoryMoment: "当下时机解读",
       navHome: "首页",
       navAbout: "关于",
       navDisclaimer: "免责声明",
       openNow: "现已开放",
       comingSoon: "即将推出",
-      man: "Man",
-      woman: "Woman",
+      man: "男",
+      woman: "女",
       stageOptions: relationshipStages.map((value) => ({
         value,
         label: stageLabel(value, "zh"),
@@ -114,11 +114,13 @@ export function getDictionary(locale: Locale) {
       momentDescription:
         "Ask about the matter on your mind right now and receive a quick timing signal shaped by the moment of inquiry.",
       differenceEyebrow: "A quieter lens",
-      differenceTitle: "Not a loud prediction machine. A more composed way of reading love, timing, and direction.",
+      differenceTitle:
+        "Not a loud prediction machine. A more composed way of reading love, timing, and direction.",
       differenceText:
         "FateMirror draws from Eastern metaphysical thinking, but presents it as a modern, atmospheric, emotionally intelligent product.",
       finalEyebrow: "Begin with one question",
-      finalTitle: "Choose the reading that matches your attention, and let the rest unfold from there.",
+      finalTitle:
+        "Choose the reading that matches your attention, and let the rest unfold from there.",
       finalCtaLove: "Open Love Reading",
       finalCtaMoment: "Open Moment Reading",
     },
@@ -127,7 +129,7 @@ export function getDictionary(locale: Locale) {
       title: "看见那些正在塑造你人生路径的隐藏模式。",
       subtitle:
         "FateMirror 用更现代、克制的方式重塑东方灵感，一条路径看关系，一条路径看此刻心里放不下的那件事。",
-      primaryCta: "从 Love Reading 开始",
+      primaryCta: "开启 Love Reading",
       secondaryCta: "查看 Moment Reading",
       pathsEyebrow: "两条正式路径",
       pathsTitle: "先选一个最贴近你此刻需要的入口。",
@@ -138,7 +140,8 @@ export function getDictionary(locale: Locale) {
       momentDescription:
         "围绕你此刻心里那件事，按起念当下的时刻做一次即时解读，帮助你判断势头、风险与应对方式。",
       differenceEyebrow: "更安静的一种命运视角",
-      differenceTitle: "它不是夸张的预测机器，而是一种更沉静地阅读关系、时机与方向的方式。",
+      differenceTitle:
+        "它不是夸张的预测机器，而是一种更沉静地阅读关系、时机与方向的方式。",
       differenceText:
         "FateMirror 受东方命理思想启发，但会用现代、克制、有氛围的产品语言去表达，而不是堆砌神秘符号。",
       finalEyebrow: "从一个问题开始",
@@ -160,7 +163,8 @@ export function getDictionary(locale: Locale) {
         "One relationship context and one real question to set the tone",
       ],
       eyebrow: "Love Reading",
-      helper: "Stay honest and simple. The result is meant to orient you, not overwhelm you.",
+      helper:
+        "Stay honest and simple. The result is meant to orient you, not overwhelm you.",
       yourName: "Your name (optional)",
       yourNamePlaceholder: "For a more personal tone",
       yourGender: "Your gender",
@@ -183,7 +187,7 @@ export function getDictionary(locale: Locale) {
       backHome: "返回首页",
       title: "先看这段连接到底合不合，而不是先被情绪拉着走。",
       intro:
-        "这一版 Love Reading 先以命宫匹配和关系语境为核心。它刻意保持轻量，后面你再提供更完整算法后，我们再继续扩展。",
+        "这一版 Love Reading 先以命宫匹配和关系语境为核心。它刻意保持轻量，后续在更完整算法准备好后再继续扩展。",
       highlights: [
         "两个人的出生日期，用来推命宫",
         "双方性别是必填，因为命宫算法依赖它",
@@ -192,7 +196,7 @@ export function getDictionary(locale: Locale) {
       eyebrow: "Love Reading",
       helper: "尽量简单，也尽量诚实。结果的作用是帮你定方向，而不是制造更多噪音。",
       yourName: "你的名字（可选）",
-      yourNamePlaceholder: "让语气更贴近你",
+      yourNamePlaceholder: "让语气更贴近",
       yourGender: "你的性别",
       theirGender: "对方性别",
       yourBirthDate: "你的出生日期",
@@ -246,7 +250,7 @@ export function getDictionary(locale: Locale) {
       eyebrow: "Moment Reading",
       helper: "问你现在真的在想的那件事，不要为了显得深刻而把问题写得太拧巴。",
       yourName: "你的名字（可选）",
-      yourNamePlaceholder: "让语气更贴近你",
+      yourNamePlaceholder: "让语气更贴近",
       question: "你此刻心里正在想着什么事？",
       questionPlaceholder:
         "例如：我现在该不该联系对方？这件合作值不值得继续推？这个局面是不是快要动了？",
@@ -275,17 +279,18 @@ export function getDictionary(locale: Locale) {
       freeLayerEyebrow: "Compatibility layer",
       freeTextTitle: "Current reading",
       unlockPreviewEyebrow: "Deeper layer",
-      unlockPreviewTitle: "A fuller relationship system can sit behind this first compatibility signal.",
+      unlockPreviewTitle:
+        "A fuller relationship system can sit behind this first compatibility signal.",
       unlockPreviewText:
         "This version begins with whether the bond is naturally aligned, second-tier aligned, or less aligned. A fuller method can deepen the interpretation later.",
-      unlockTeaser:
-        "True wisdom reveals itself to those who seek with sincerity.",
+      unlockTeaser: "True wisdom reveals itself to those who seek with sincerity.",
       paywallTitle: "Unlock the fuller love layer",
       paywallSubtitle:
         "Move from palace matching into a fuller relationship interpretation once the broader love method is ready.",
       paywallPrice: "$3.99",
       paidLayerEyebrow: "Unlocked layer",
-      paidLayerTitle: "The deeper love method will expand from compatibility into fuller interpretation.",
+      paidLayerTitle:
+        "The deeper love method will expand from compatibility into fuller interpretation.",
       unlockButton: "Continue to unlock",
       unlockPageTitle: "Unlock the deeper love layer",
       unlockPageText:
@@ -298,7 +303,7 @@ export function getDictionary(locale: Locale) {
       unavailableText:
         "Love Reading 需要两个人的出生日期、双方性别、关系阶段，以及你心里的那个问题，结果才会具体。",
       unavailableCta: "去填写表单",
-      restart: "重新开始一轮 Love Reading",
+      restart: "重新开始一份 Love Reading",
       title: "这段关系可以先从“合不合”来读，而不只是从想不想来读。",
       stageLabel: "阶段",
       snapshotTitle: "阅读快照",
@@ -344,11 +349,11 @@ export function getDictionary(locale: Locale) {
       freeLayerEyebrow: "Moment layer",
       freeTextTitle: "Current reading",
       unlockPreviewEyebrow: "Deeper layer",
-      unlockPreviewTitle: "There is more to see when the moment deserves a second pass.",
+      unlockPreviewTitle:
+        "There is more to see when the moment deserves a second pass.",
       unlockPreviewText:
         "The deeper layer expands the signal into a steadier interpretation and more grounded action guidance.",
-      unlockTeaser:
-        "True wisdom reveals itself to those who seek with sincerity.",
+      unlockTeaser: "True wisdom reveals itself to those who seek with sincerity.",
       paywallTitle: "Unlock the fuller moment layer",
       paywallSubtitle:
         "Move from a quick signal into a fuller reading of timing, friction, and what to do next.",
@@ -369,7 +374,7 @@ export function getDictionary(locale: Locale) {
       unavailableText:
         "Moment Reading 主要需要的，是你正在问什么，以及你起念的那个时刻。",
       unavailableCta: "去填写表单",
-      restart: "重新开始一轮 Moment Reading",
+      restart: "重新开始一份 Moment Reading",
       title: "你起念的那个瞬间，本身就已经带着一个信号。",
       snapshotTitle: "时刻快照",
       primaryTone: "主要氛围",
@@ -400,7 +405,8 @@ export function getDictionary(locale: Locale) {
   const about = {
     en: {
       eyebrow: "About FateMirror",
-      title: "A reflective reading product built to help people see more clearly, not surrender blindly.",
+      title:
+        "A reflective reading product built to help people see more clearly, not surrender blindly.",
       philosophyTitle: "Philosophy",
       philosophyText:
         "FateMirror is built around one idea: destiny is not something to obey without thought. It is something to understand, so that choice becomes possible again.",
@@ -408,14 +414,15 @@ export function getDictionary(locale: Locale) {
       methodText:
         "The product draws from traditional Eastern metaphysical thinking, but expresses it through a modern, emotionally intelligent web experience.",
       quote:
-        "Fate is not meant to surrender to — it is meant to be understood, then chosen.",
+        "Fate is not meant to surrender to it. It is meant to be understood, then chosen.",
       contactTitle: "Contact",
       contactText:
         "A fuller contact flow can live here later. For now, this page anchors trust and product philosophy.",
     },
     zh: {
       eyebrow: "关于 FateMirror",
-      title: "这是一款帮助人看清局势、找回选择权的反思式解读产品，而不是让人盲目屈从的命运站。",
+      title:
+        "这是一款帮助人看清局势、找回选择权的反思式解读产品，而不是让人盲目屈从的命运站。",
       philosophyTitle: "产品理念",
       philosophyText:
         "FateMirror 的底层想法很简单：命运不是拿来无条件服从的，而是拿来看懂、然后重新选择的。",
@@ -447,8 +454,7 @@ export function getDictionary(locale: Locale) {
         "本平台所有解读内容均基于传统命理推算方法，属于趋势推演，不构成对命运的绝对判定。用户的自主行动仍是改变趋势的重要变量。",
       health:
         "涉及五行体质、情志调养或身心状态的内容，仅供传统文化参考，不构成任何医疗诊断或治疗建议。如有健康问题，请咨询专业医疗人员。",
-      user:
-        "用户基于平台内容所做的一切决定，均由用户自行负责。",
+      user: "用户基于平台内容所做的一切决定，均由用户自行负责。",
     },
   }[locale];
 
