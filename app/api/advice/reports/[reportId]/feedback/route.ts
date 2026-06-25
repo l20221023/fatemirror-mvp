@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { NextResponse, type NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 
 import { createAdviceError, createAdviceErrorResponse } from "../../../../../../lib/advice";
 import { saveAdviceFeedback } from "../../../../../../lib/advice/services/create-report";
@@ -19,7 +19,7 @@ const FeedbackSchema = z.object({
   ).max(5),
 });
 
-function readAccessToken(request: NextRequest) {
+function readAccessToken(request: Request) {
   const headerToken = request.headers.get("x-advice-access-token");
   if (headerToken) {
     return headerToken.trim();
@@ -33,7 +33,7 @@ function readAccessToken(request: NextRequest) {
   return null;
 }
 
-export async function POST(request: NextRequest, ctx: { params: Promise<{ reportId: string }> }) {
+export async function POST(request: Request, ctx: { params: Promise<{ reportId: string }> }) {
   const { reportId } = await ctx.params;
   const accessToken = readAccessToken(request);
 

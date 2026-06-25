@@ -1,4 +1,4 @@
-import { NextResponse, type NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 
 import {
   createAdviceError,
@@ -8,7 +8,7 @@ import {
 import { getAdviceReport } from "../../../../../lib/advice/services/get-report";
 import { deleteAdviceReport } from "../../../../../lib/advice/services/delete-report";
 
-function readAccessToken(request: NextRequest) {
+function readAccessToken(request: Request) {
   const headerToken = request.headers.get("x-advice-access-token");
   if (headerToken) {
     return headerToken.trim();
@@ -22,7 +22,7 @@ function readAccessToken(request: NextRequest) {
   return null;
 }
 
-export async function GET(request: NextRequest, ctx: { params: Promise<{ reportId: string }> }) {
+export async function GET(request: Request, ctx: { params: Promise<{ reportId: string }> }) {
   const { reportId } = await ctx.params;
   const accessToken = readAccessToken(request);
 
@@ -56,7 +56,7 @@ export async function GET(request: NextRequest, ctx: { params: Promise<{ reportI
   );
 }
 
-export async function DELETE(request: NextRequest, ctx: { params: Promise<{ reportId: string }> }) {
+export async function DELETE(request: Request, ctx: { params: Promise<{ reportId: string }> }) {
   const { reportId } = await ctx.params;
   const accessToken = readAccessToken(request);
 

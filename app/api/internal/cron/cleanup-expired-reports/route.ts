@@ -1,8 +1,8 @@
-import { NextResponse, type NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 
 import { cleanupExpiredAdviceReports } from "@/lib/advice/services/cleanup-expired-reports";
 
-function isAuthorized(request: NextRequest) {
+function isAuthorized(request: Request) {
   const secret = process.env.CRON_SECRET || process.env.ADVICE_CLEANUP_CRON_SECRET || "";
   if (!secret) return process.env.NODE_ENV !== "production";
 
@@ -10,7 +10,7 @@ function isAuthorized(request: NextRequest) {
   return header === secret;
 }
 
-export async function POST(request: NextRequest) {
+export async function POST(request: Request) {
   if (!isAuthorized(request)) {
     return NextResponse.json({ success: false, error: "ACCESS_DENIED" }, { status: 403 });
   }

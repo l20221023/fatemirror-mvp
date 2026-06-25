@@ -24,7 +24,8 @@ describe("marriage-direction boundaries", () => {
     ] as const;
 
     for (const testCase of cases) {
-      expect(calculateMarriageDirectionFromLunar(...testCase.input)).toMatchObject(testCase.expected);
+      const [month, day] = testCase.input;
+      expect(calculateMarriageDirectionFromLunar(month, day)).toMatchObject(testCase.expected);
     }
   });
 

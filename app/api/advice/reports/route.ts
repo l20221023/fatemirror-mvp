@@ -1,4 +1,4 @@
-import { NextResponse, type NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 
 import { getOrCreateSessionId } from "../../../../lib/session";
 import {
@@ -25,18 +25,7 @@ import { getCommercialEntitlementForProduct } from "../../../../lib/commercial/e
 import { BETA_ACCESS_COOKIE_NAME } from "../../../../lib/beta-access/constants";
 import { findActiveBetaSessionByToken, recordBetaSessionUsage } from "../../../../lib/beta-access/service";
 
-function readRequestCookie(request: NextRequest | Request, name: string) {
-  const nextRequest = request as NextRequest & {
-    cookies?: {
-      get(cookieName: string): { value?: string } | undefined;
-    };
-  };
-
-  const fromCookies = nextRequest.cookies?.get(name)?.value;
-  if (fromCookies) {
-    return fromCookies;
-  }
-
+function readRequestCookie(request: Request, name: string) {
   const cookieHeader = request.headers.get("cookie");
   if (!cookieHeader) {
     return null;
@@ -73,7 +62,7 @@ function buildQuotaNotice(locale: "en" | "zh", reason: string) {
   return messages[reason] ?? null;
 }
 
-export async function POST(request: NextRequest) {
+export async function POST(request: Request) {
   const body = await request.json().catch(() => null);
   const parsed = AdviceGenerateRequestSchema.safeParse(body);
 

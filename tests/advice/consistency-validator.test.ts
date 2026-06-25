@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { validateAdviceConsistency } from "../../lib/advice/validators/consistency-validator";
+import { ADVICE_ENGINE_VERSION } from "../../lib/advice/types";
 
 describe("advice consistency validator", () => {
   it("accepts matching source anchors", () => {
@@ -14,7 +15,7 @@ describe("advice consistency validator", () => {
       },
       {
         kind: "extended-advice",
-        version: "0.1.0",
+        version: ADVICE_ENGINE_VERSION,
         observedSummary: "They cancelled one meeting.",
         assumptionBoundary: "Some meanings remain assumptions.",
         traditionalPerspective: ["Traditional perspective may offer context."],
@@ -47,7 +48,7 @@ describe("advice consistency validator", () => {
       },
       {
         kind: "extended-advice",
-        version: "0.1.0",
+        version: ADVICE_ENGINE_VERSION,
         observedSummary: "I think they lost interest.",
         assumptionBoundary: "",
         traditionalPerspective: [],

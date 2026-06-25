@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import { MockAdviceProvider } from "../../lib/advice/providers/mock-provider";
 import { OpenAIAdviceProvider } from "../../lib/advice/providers/openai-provider";
+import { ADVICE_ENGINE_VERSION } from "../../lib/advice/types";
 
 describe("advice providers", () => {
   it("returns deterministic mock provider JSON", async () => {
@@ -19,7 +20,7 @@ describe("advice providers", () => {
       },
       localAdvice: {
         kind: "local-advice",
-        version: "0.1.0",
+        version: ADVICE_ENGINE_VERSION,
         locale: "en",
         relationshipStage: "getting-closer",
         primaryConcern: "communication",
@@ -69,7 +70,7 @@ describe("advice providers", () => {
       },
       localAdvice: {
         kind: "local-advice",
-        version: "0.1.0",
+        version: ADVICE_ENGINE_VERSION,
         locale: "en",
         relationshipStage: "getting-closer",
         primaryConcern: "communication",

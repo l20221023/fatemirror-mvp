@@ -35,16 +35,17 @@ describe("cleanup expired reports", () => {
     );
 
     const repository = createDefaultAdviceReportRepository();
-    await repository.createReport({
-      id: "expired-report",
-      accessTokenHash: getAdviceAccessTokenHash("expired-token"),
-      createdAt: new Date("2026-01-01T00:00:00.000Z"),
-      updatedAt: new Date("2026-01-01T00:00:00.000Z"),
-      expiresAt: new Date("2026-01-02T00:00:00.000Z"),
-      locale: generated.report.locale,
-      relationshipStage: generated.report.relationshipStage,
-      primaryConcern: generated.report.primaryConcern,
-      generationMode: "local_only",
+      await repository.createReport({
+        id: "expired-report",
+        accessTokenHash: getAdviceAccessTokenHash("expired-token"),
+        createdAt: new Date("2026-01-01T00:00:00.000Z"),
+        updatedAt: new Date("2026-01-01T00:00:00.000Z"),
+        expiresAt: new Date("2026-01-02T00:00:00.000Z"),
+        locale: generated.report.locale,
+        cohortId: null,
+        relationshipStage: generated.report.relationshipStage,
+        primaryConcern: generated.report.primaryConcern,
+        generationMode: "local_only",
       safetyLevel: generated.report.safety.isHighRisk ? "high" : "low",
       provider: generated.report.generation.provider,
       model: generated.report.generation.model,
@@ -97,6 +98,7 @@ describe("cleanup expired reports", () => {
         updatedAt: new Date("2026-01-01T00:00:00.000Z"),
         expiresAt: new Date("2026-01-02T00:00:00.000Z"),
         locale: generated.report.locale,
+        cohortId: null,
         relationshipStage: generated.report.relationshipStage,
         primaryConcern: generated.report.primaryConcern,
         generationMode: "local_only",

@@ -1,12 +1,13 @@
 import { describe, expect, it } from "vitest";
 
 import { validateProhibitedAdviceContent } from "../../lib/advice/validators/prohibited-content-validator";
+import { ADVICE_ENGINE_VERSION } from "../../lib/advice/types";
 
 describe("prohibited advice content validator", () => {
   it("rejects forbidden destiny, harassment, and medical content", () => {
     const result = validateProhibitedAdviceContent({
       kind: "extended-advice",
-      version: "0.1.0",
+      version: ADVICE_ENGINE_VERSION,
       observedSummary: "This is a destined soulmate connection.",
       assumptionBoundary: "You know exactly what they feel.",
       traditionalPerspective: ["Guaranteed marriage."],
@@ -32,7 +33,7 @@ describe("prohibited advice content validator", () => {
     expect(
       validateProhibitedAdviceContent({
         kind: "extended-advice",
-        version: "0.1.0",
+        version: ADVICE_ENGINE_VERSION,
         observedSummary: "The recent pattern is uneven but observable.",
         assumptionBoundary: "Some meanings remain assumptions.",
         traditionalPerspective: ["Traditional perspective may offer context only."],

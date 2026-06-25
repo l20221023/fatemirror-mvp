@@ -73,7 +73,7 @@ export type AdviceReportMetrics = {
 
 export type AdviceReportRepositoryCreateInput = Omit<
   AdviceReportRecord,
-  "createdAt" | "updatedAt" | "deletedAt"
+  "createdAt" | "updatedAt" | "deletedAt" | "cohortId"
 > & {
   createdAt?: Date;
   updatedAt?: Date;
