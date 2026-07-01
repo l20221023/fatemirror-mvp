@@ -228,7 +228,7 @@ export async function buildLoveReadingExperience(
     paidReadingText,
     paidPreviewText:
       locale === "zh"
-        ? "这一层之后，可以继续延展到更完整的 Love 方法，把匹配结论真正放进关系语境里展开。"
+        ? "这一层之后，可以继续延展到更完整的关系方法，把匹配结论真正放进关系语境里展开。"
         : "A fuller love method can extend from this compatibility result into a deeper interpretation of how the relationship may actually feel and develop.",
   };
 }

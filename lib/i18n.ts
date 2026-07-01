@@ -129,12 +129,12 @@ export function getDictionary(locale: Locale) {
       title: "看见那些正在塑造你人生路径的隐藏模式。",
       subtitle:
         "FateMirror 用更现代、克制的方式重塑东方灵感，一条路径看关系，一条路径看此刻心里放不下的那件事。",
-      primaryCta: "开启 Love Reading",
-      secondaryCta: "查看 Moment Reading",
+      primaryCta: "开始关系解读",
+      secondaryCta: "查看此刻之问",
       pathsEyebrow: "两条正式路径",
       pathsTitle: "先选一个最贴近你此刻需要的入口。",
       pathsText:
-        "一条 reading 看关系与匹配，一条 reading 看当下这件事的时机与走势，让产品结构更清晰，也更像真实用户会使用的工具。",
+        "一条解读看关系与匹配，一条解读看当下这件事的时机与走势，让产品结构更清晰，也更像真实用户会使用的工具。",
       loveDescription:
         "从命宫匹配、关系阶段与问题语境出发，看这段连接到底是更顺、更费力，还是需要更有意识地经营。",
       momentDescription:
@@ -146,8 +146,8 @@ export function getDictionary(locale: Locale) {
         "FateMirror 受东方命理思想启发，但会用现代、克制、有氛围的产品语言去表达，而不是堆砌神秘符号。",
       finalEyebrow: "从一个问题开始",
       finalTitle: "先选中你此刻最在意的入口，剩下的内容再慢慢展开。",
-      finalCtaLove: "打开 Love Reading",
-      finalCtaMoment: "打开 Moment Reading",
+      finalCtaLove: "打开关系解读",
+      finalCtaMoment: "打开此刻之问",
     },
   }[locale];
 
@@ -187,13 +187,13 @@ export function getDictionary(locale: Locale) {
       backHome: "返回首页",
       title: "先看这段连接到底合不合，而不是先被情绪拉着走。",
       intro:
-        "这一版 Love Reading 先以命宫匹配和关系语境为核心。它刻意保持轻量，后续在更完整算法准备好后再继续扩展。",
+        "这一版关系解读先以命宫匹配和关系语境为核心。它刻意保持轻量，后续在更完整算法准备好后再继续扩展。",
       highlights: [
         "两个人的出生日期，用来推命宫",
         "双方性别是必填，因为命宫算法依赖它",
         "一个关系阶段和一个真实问题，用来控制结果语气",
       ],
-      eyebrow: "Love Reading",
+      eyebrow: "关系解读",
       helper: "尽量简单，也尽量诚实。结果的作用是帮你定方向，而不是制造更多噪音。",
       yourName: "你的名字（可选）",
       yourNamePlaceholder: "让语气更贴近",
@@ -210,8 +210,8 @@ export function getDictionary(locale: Locale) {
         "例如：我想知道这段关系是不是天然更顺，还是以后会需要我花很多力气去维持。",
       birthTimeNote:
         "这里的出生时间目前是可选项。当前匹配层主要看出生年份与性别，不是完整排盘。",
-      error: "请先完成所有必填项，再开始 reading。",
-      submit: "查看我的 Love Reading",
+      error: "请先完成所有必填项，再开始解读。",
+      submit: "查看我的关系解读",
     },
   }[locale];
 
@@ -241,21 +241,21 @@ export function getDictionary(locale: Locale) {
       backHome: "返回首页",
       title: "围绕你此刻心里那件事，看它正在往哪里走。",
       intro:
-        "Moment Reading 以你起念当下的时刻为锚点，更适合处理一个当前问题，而不是讲一整段人生背景。",
+        "此刻之问以你起念当下的时刻为锚点，更适合处理一个当前问题，而不是讲一整段人生背景。",
       highlights: [
         "最适合问一件当前的事",
         "以起念时刻作为主要依据",
         "结果更偏向时机判断与动作提醒",
       ],
-      eyebrow: "Moment Reading",
+      eyebrow: "此刻之问",
       helper: "问你现在真的在想的那件事，不要为了显得深刻而把问题写得太拧巴。",
       yourName: "你的名字（可选）",
       yourNamePlaceholder: "让语气更贴近",
       question: "你此刻心里正在想着什么事？",
       questionPlaceholder:
         "例如：我现在该不该联系对方？这件合作值不值得继续推？这个局面是不是快要动了？",
-      error: "请先写下你要问的事情，再开始 reading。",
-      submit: "查看我的 Moment Reading",
+      error: "请先写下你要问的事情，再开始解读。",
+      submit: "查看我的此刻之问",
     },
   }[locale];
 
@@ -299,11 +299,11 @@ export function getDictionary(locale: Locale) {
     },
     zh: {
       unavailableEyebrow: "暂时无法显示结果",
-      unavailableTitle: "先把双方、性别和问题补齐，Love Reading 才能真正成立。",
+      unavailableTitle: "先把双方、性别和问题补齐，关系解读才能真正成立。",
       unavailableText:
-        "Love Reading 需要两个人的出生日期、双方性别、关系阶段，以及你心里的那个问题，结果才会具体。",
+        "关系解读需要两个人的出生日期、双方性别、关系阶段，以及你心里的那个问题，结果才会具体。",
       unavailableCta: "去填写表单",
-      restart: "重新开始一份 Love Reading",
+      restart: "重新开始一份关系解读",
       title: "这段关系可以先从“合不合”来读，而不只是从想不想来读。",
       stageLabel: "阶段",
       snapshotTitle: "阅读快照",
@@ -318,19 +318,19 @@ export function getDictionary(locale: Locale) {
       unlockPreviewEyebrow: "更深层",
       unlockPreviewTitle: "这一层之后，还可以接上更完整的关系系统。",
       unlockPreviewText:
-        "当前版本先从命宫匹配出发，判断这段连接是天然更顺、次级合适，还是更需要用力经营。更完整的 love 方法会在后续继续补上。",
+        "当前版本先从命宫匹配出发，判断这段连接是天然更顺、次级合适，还是更需要用力经营。更完整的关系方法会在后续继续补上。",
       unlockTeaser: "诚意叩门，方能入室。深层玄机，为有缘人备。",
-      paywallTitle: "解锁更完整的 Love 层",
+      paywallTitle: "解锁更完整的关系层",
       paywallSubtitle:
-        "先从命宫匹配开始，等更完整的 Love 方法就绪后，再继续走向更深层的关系解读。",
+        "先从命宫匹配开始，等更完整的关系方法就绪后，再继续走向更深层的关系解读。",
       paywallPrice: "$3.99",
       paidLayerEyebrow: "已解锁层",
-      paidLayerTitle: "更深层的 Love 方法会在这里从匹配继续展开到完整关系解释。",
+      paidLayerTitle: "更深层的关系方法会在这里从匹配继续展开到完整关系解释。",
       unlockButton: "继续解锁",
-      unlockPageTitle: "解锁更深层 Love 内容",
+      unlockPageTitle: "解锁更深层关系内容",
       unlockPageText:
-        "当前 MVP 里，支付仍是占位流程。你可以先通过测试解锁按钮，模拟更深层 Love 内容的已付费状态。",
-      unlockPageDemo: "测试解锁这份 Love Reading",
+        "当前 MVP 里，支付仍是占位流程。你可以先通过测试解锁按钮，模拟更深层关系内容的已付费状态。",
+      unlockPageDemo: "测试解锁这份关系解读",
     },
   }[locale];
 
@@ -372,31 +372,31 @@ export function getDictionary(locale: Locale) {
       unavailableEyebrow: "暂时无法显示结果",
       unavailableTitle: "先把你要问的事情写出来。",
       unavailableText:
-        "Moment Reading 主要需要的，是你正在问什么，以及你起念的那个时刻。",
+        "此刻之问主要需要的，是你正在问什么，以及你起念的那个时刻。",
       unavailableCta: "去填写表单",
-      restart: "重新开始一份 Moment Reading",
+      restart: "重新开始一份此刻之问",
       title: "你起念的那个瞬间，本身就已经带着一个信号。",
       snapshotTitle: "时刻快照",
       primaryTone: "主要氛围",
       focusLabel: "当前焦点",
-      freeLayerEyebrow: "Moment 层",
+      freeLayerEyebrow: "此刻层",
       freeTextTitle: "当前解读",
       unlockPreviewEyebrow: "更深层",
       unlockPreviewTitle: "如果这件事值得再看一遍，后面还有更完整的一层。",
       unlockPreviewText:
         "更深层会继续把这次信号展开成更稳的判断，并给出更贴近现实动作的建议。",
       unlockTeaser: "诚意叩门，方能入室。深层玄机，为有缘人备。",
-      paywallTitle: "解锁更完整的 Moment 层",
+      paywallTitle: "解锁更完整的此刻层",
       paywallSubtitle:
         "从一个快信号，进入更完整的时机判断、阻力识别与下一步建议。",
       paywallPrice: "$3.99",
       paidLayerEyebrow: "已解锁层",
       paidLayerTitle: "更深一层去看这件事、它的时机，以及你接下来该怎么动。",
       unlockButton: "继续解锁",
-      unlockPageTitle: "解锁更深层 Moment 内容",
+      unlockPageTitle: "解锁更深层此刻内容",
       unlockPageText:
-        "当前 MVP 里，支付仍是占位流程。你可以先通过测试解锁按钮，模拟更深层 Moment 内容的已付费状态。",
-      unlockPageDemo: "测试解锁这份 Moment Reading",
+        "当前 MVP 里，支付仍是占位流程。你可以先通过测试解锁按钮，模拟更深层此刻内容的已付费状态。",
+      unlockPageDemo: "测试解锁这份此刻之问",
       currentQuestion: "当前问题",
       currentSignal: "当前信号",
     },
