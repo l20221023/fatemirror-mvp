@@ -100,6 +100,26 @@ button {
   animation: fate-mirror-orbit 12s ease-in-out infinite;
 }
 
+.hero-device {
+  transform: translateZ(0);
+}
+
+.hero-device::before {
+  content: "";
+  position: absolute;
+  inset: 10% 4% auto;
+  height: 44%;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgba(242, 240, 235, 0.08), transparent);
+  transform: rotate(-18deg);
+}
+
+.process-cell {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.012)),
+    radial-gradient(circle at 18% 16%, rgba(125, 211, 252, 0.08), transparent 34%);
+}
+
 @keyframes fate-mirror-breathe {
   0%,
   100% {

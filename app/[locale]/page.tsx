@@ -16,13 +16,13 @@ type ProductCard = {
   cta: string;
   source: string;
   meta: string[];
+  accent: "violet" | "blue";
 };
 
 type ToolCard = {
   title: string;
   description: string;
   href: string;
-  source: string;
   icon: string;
 };
 
@@ -42,7 +42,8 @@ export default async function LocalizedHomePage(props: LocalizedHomePageProps) {
       href: "/reading/advice",
       cta: isZh ? "开始关系解读" : "Start relationship reading",
       source: "home_featured_advice",
-      meta: isZh ? ["约 4 步", "使用 AI 扩展", "报告可删除"] : ["4 steps", "AI-assisted", "Deletable report"],
+      meta: isZh ? ["4 步输入", "AI 扩展", "报告可删除"] : ["4-step input", "AI-assisted", "Deletable report"],
+      accent: "violet",
     },
     {
       title: isZh ? "此刻之问" : "Moment Question",
@@ -52,7 +53,8 @@ export default async function LocalizedHomePage(props: LocalizedHomePageProps) {
       href: "/reading/moment",
       cta: isZh ? "查看此刻之问" : "Open moment question",
       source: "home_featured_moment",
-      meta: isZh ? ["轻量输入", "不需要双方资料", "含计算依据"] : ["Light input", "No partner data", "Trace included"],
+      meta: isZh ? ["轻量输入", "无需双方资料", "含计算依据"] : ["Light input", "No partner data", "Trace included"],
+      accent: "blue",
     },
   ];
 
@@ -61,22 +63,19 @@ export default async function LocalizedHomePage(props: LocalizedHomePageProps) {
       title: isZh ? "我的命卦" : "My Ming Gua",
       description: isZh ? "用出生年份和性别计算命卦、分组与方向。" : "Calculate palace number, group, and directions.",
       href: "/reading/ming-gua",
-      source: "home_tool_ming_gua",
-      icon: "1",
+      icon: "01",
     },
     {
       title: isZh ? "双方命卦匹配" : "Ming Gua Match",
       description: isZh ? "比较两个人的命卦组别与传统匹配类型。" : "Compare two Ming Gua groups and match type.",
       href: "/reading/ming-gua-match",
-      source: "home_tool_match",
-      icon: "2",
+      icon: "02",
     },
     {
       title: isZh ? "婚配方位" : "Marriage Direction",
       description: isZh ? "按农历规则返回传统方位轴和完整计算轨迹。" : "Return a direction axis with the calculation trace.",
       href: "/reading/marriage-direction",
-      source: "home_tool_direction",
-      icon: "3",
+      icon: "03",
     },
   ];
 
@@ -92,17 +91,27 @@ export default async function LocalizedHomePage(props: LocalizedHomePageProps) {
         ["Action stays yours", "The result offers a lens without replacing communication, boundaries, or judgment."],
       ];
 
-  const reportPreview = isZh
-    ? ["已确认的事实", "你目前的判断", "还不能确认的部分", "传统视角", "建议的下一步", "需要停止推进的信号"]
-    : ["Confirmed facts", "Your current read", "Still unknown", "Traditional lens", "Suggested next step", "Stop conditions"];
-
   const boundaries = isZh
     ? ["AI 不读取他人内心", "不做必然命运判断", "不提供医疗与投资预测", "报告可以主动删除"]
     : ["AI does not read minds", "No absolute fate claims", "No medical or investment prediction", "Reports can be deleted"];
 
+  const process = isZh
+    ? [
+        ["输入", "只收集完成判断所需的信息"],
+        ["规则", "先由固定程序生成基础结果"],
+        ["边界", "事实、推测、未知信息分层"],
+        ["行动", "把下一步交还给你"],
+      ]
+    : [
+        ["Input", "Only ask for what the reading needs"],
+        ["Rules", "Fixed procedures create the base result"],
+        ["Boundaries", "Facts, inferences, and unknowns stay separate"],
+        ["Action", "The next step remains yours"],
+      ];
+
   return (
-    <main className="mx-auto w-full max-w-7xl px-5 pb-16 pt-6 sm:px-8 lg:px-12">
-      <TrackEvent eventName="landing_view" page={`/${locale}`} metadata={{ locale, surface: "home_v042" }} />
+    <main className="relative mx-auto w-full max-w-7xl px-5 pb-16 pt-6 sm:px-8 lg:px-12">
+      <TrackEvent eventName="landing_view" page={`/${locale}`} metadata={{ locale, surface: "home_v043_visual_refresh" }} />
       <header className="flex flex-wrap items-center justify-between gap-4 py-4">
         <Link href={`/${locale}`} className="font-serif text-base tracking-[0.18em] text-[color:var(--color-foreground)]">
           {dict.shared.brand}
@@ -121,12 +130,12 @@ export default async function LocalizedHomePage(props: LocalizedHomePageProps) {
         </nav>
       </header>
 
-      <section className="grid min-h-[calc(100svh-96px)] items-center gap-10 py-10 lg:grid-cols-[minmax(0,1fr)_420px] lg:py-14">
+      <section className="grid min-h-[calc(100svh-96px)] items-center gap-10 py-9 lg:grid-cols-[minmax(0,1fr)_minmax(360px,480px)] lg:py-12">
         <div>
           <p className="inline-flex rounded-full border border-[color:var(--color-border-active)] bg-[rgba(167,139,250,0.11)] px-3 py-1 text-xs tracking-[0.18em] text-[color:var(--color-accent-primary)] uppercase">
             {isZh ? "V0.4 · 邀请制测试" : "V0.4 · invite-only beta"}
           </p>
-          <h1 className="mt-6 max-w-4xl font-serif text-5xl leading-[1.08] text-balance sm:text-6xl lg:text-7xl">
+          <h1 className="mt-6 max-w-4xl font-serif text-5xl leading-[1.04] text-balance sm:text-6xl lg:text-7xl">
             {isZh ? "看清关系，也看清自己的下一步。" : "See the relationship, then see your next step."}
           </h1>
           <p className="mt-6 max-w-2xl text-base leading-8 text-[color:var(--color-muted)] sm:text-lg">
@@ -143,15 +152,17 @@ export default async function LocalizedHomePage(props: LocalizedHomePageProps) {
             </Link>
           </div>
           <div className="mt-8 grid max-w-2xl gap-3 text-sm text-[color:var(--color-secondary)] sm:grid-cols-2">
-            {boundaries.slice(0, 4).map((item) => (
+            {boundaries.map((item) => (
               <span key={item} className="rounded-full border border-[color:var(--color-border)] bg-[rgba(15,17,25,0.68)] px-4 py-2">
                 {item}
               </span>
             ))}
           </div>
         </div>
-        <FateMirrorVisual />
+        <FateMirrorVisual locale={locale} />
       </section>
+
+      <ProcessStrip items={process} />
 
       <Section eyebrow={isZh ? "为什么使用 FateMirror" : "Why FateMirror"} title={isZh ? "传统视角可以保留，现实判断也必须清楚。" : "Keep the traditional lens without losing practical judgment."}>
         <div className="grid gap-4 md:grid-cols-3">
@@ -161,7 +172,7 @@ export default async function LocalizedHomePage(props: LocalizedHomePageProps) {
         </div>
       </Section>
 
-      <Section eyebrow={isZh ? "核心产品" : "Core products"} title={isZh ? "先突出真正需要完成的体验，再放轻量工具。" : "Lead with the experiences that do the real work."}>
+      <Section eyebrow={isZh ? "核心产品" : "Core products"} title={isZh ? "核心体验更像一间安静的观测室，而不是入口列表。" : "The core experience feels like a quiet observatory, not a list of doors."}>
         <div className="grid gap-5 lg:grid-cols-2">
           {primaryProducts.map((item) => (
             <FeaturedProduct key={item.title} item={item} locale={locale} />
@@ -177,28 +188,8 @@ export default async function LocalizedHomePage(props: LocalizedHomePageProps) {
         </div>
       </Section>
 
-      <Section eyebrow={isZh ? "报告预览" : "Report preview"} title={isZh ? "用户输入之后，会看到的是结构，而不是一句神秘结论。" : "After input, users see structure instead of a mysterious verdict."}>
-        <div className="grid gap-5 lg:grid-cols-[0.85fr_1.15fr]">
-          <div className="rounded-[1.5rem] border border-[color:var(--color-border)] bg-[rgba(15,17,25,0.72)] p-6">
-            <p className="text-sm leading-7 text-[color:var(--color-muted)]">
-              {isZh
-                ? "这张脱敏样例展示报告会如何区分事实、推测、传统视角和现实行动。它比更多装饰更能解释产品价值。"
-                : "This anonymized sample shows how a report separates facts, inferences, traditional context, and practical action."}
-            </p>
-          </div>
-          <div className="rounded-[1.5rem] border border-[color:rgba(125,211,252,0.24)] bg-[rgba(20,23,34,0.84)] p-5 shadow-[0_24px_80px_rgba(0,0,0,0.26)]">
-            <div className="grid gap-3 sm:grid-cols-2">
-              {reportPreview.map((item, index) => (
-                <div key={item} className="rounded-[1rem] border border-[color:var(--color-border)] bg-[rgba(255,255,255,0.035)] p-4">
-                  <p className="font-mono text-xs text-[color:var(--color-accent-secondary)]">0{index + 1}</p>
-                  <h3 className="mt-2 text-base font-medium">{item}</h3>
-                  <div className="mt-4 h-2 w-full rounded-full bg-[rgba(255,255,255,0.08)]" />
-                  <div className="mt-2 h-2 w-2/3 rounded-full bg-[rgba(255,255,255,0.06)]" />
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
+      <Section eyebrow={isZh ? "报告预览" : "Report preview"} title={isZh ? "输入之后，用户看到的是可验证结构，而不是一句神秘结论。" : "After input, users see a verifiable structure instead of a mysterious verdict."}>
+        <ReportPreview isZh={isZh} />
       </Section>
 
       <section className="py-8">
@@ -232,16 +223,68 @@ function Section({ id, eyebrow, title, children }: { id?: string; eyebrow: strin
   );
 }
 
-function FateMirrorVisual() {
+function FateMirrorVisual({ locale }: { locale: Locale }) {
+  const isZh = locale === "zh";
+
   return (
-    <div className="relative mx-auto flex aspect-[0.78] w-full max-w-[360px] items-center justify-center sm:max-w-[420px]" aria-hidden="true">
-      <div className="fate-mirror-orbit absolute inset-8 rounded-[50%] border border-[rgba(125,211,252,0.18)]" />
-      <div className="fate-mirror-core relative h-[82%] w-[72%] rounded-[50%] border border-[rgba(242,240,235,0.14)] bg-[radial-gradient(circle_at_48%_30%,rgba(242,240,235,0.18),transparent_18%),linear-gradient(145deg,rgba(167,139,250,0.22),rgba(125,211,252,0.08)_42%,rgba(15,17,25,0.84)_78%)] shadow-[inset_0_0_42px_rgba(242,240,235,0.08),0_32px_100px_rgba(0,0,0,0.42)]">
-        <div className="absolute inset-[10%] rounded-[50%] border border-[rgba(167,139,250,0.18)]" />
-        <div className="absolute left-[22%] top-[16%] h-[28%] w-[22%] rounded-full bg-[rgba(242,240,235,0.18)] blur-xl" />
-        <div className="absolute inset-x-[22%] top-[48%] h-px bg-[linear-gradient(90deg,transparent,rgba(125,211,252,0.62),transparent)]" />
+    <div className="hero-device relative mx-auto w-full max-w-[470px]" aria-hidden="true">
+      <div className="absolute -inset-5 rounded-[2rem] bg-[radial-gradient(circle_at_42%_16%,rgba(167,139,250,0.22),transparent_32%),radial-gradient(circle_at_75%_70%,rgba(125,211,252,0.16),transparent_36%)] blur-2xl" />
+      <div className="relative overflow-hidden rounded-[1.75rem] border border-[color:var(--color-border)] bg-[rgba(15,17,25,0.78)] p-4 shadow-[0_28px_110px_rgba(0,0,0,0.38)]">
+        <div className="flex items-center justify-between border-b border-[color:var(--color-border)] pb-3">
+          <span className="font-mono text-xs tracking-[0.2em] text-[color:var(--color-accent-secondary)]">FATEMIRROR</span>
+          <span className="rounded-full border border-[rgba(125,211,252,0.22)] px-2.5 py-1 font-mono text-[10px] text-[color:var(--color-secondary)]">
+            {isZh ? "观测中" : "OBSERVING"}
+          </span>
+        </div>
+
+        <div className="grid gap-4 pt-5 sm:grid-cols-[0.9fr_1.1fr]">
+          <div className="relative flex min-h-64 items-center justify-center">
+            <div className="fate-mirror-orbit absolute inset-4 rounded-[50%] border border-[rgba(125,211,252,0.18)]" />
+            <div className="fate-mirror-core relative h-56 w-44 rounded-[50%] border border-[rgba(242,240,235,0.14)] bg-[radial-gradient(circle_at_48%_30%,rgba(242,240,235,0.18),transparent_18%),linear-gradient(145deg,rgba(167,139,250,0.24),rgba(125,211,252,0.1)_42%,rgba(15,17,25,0.86)_78%)] shadow-[inset_0_0_42px_rgba(242,240,235,0.08),0_32px_100px_rgba(0,0,0,0.42)]">
+              <div className="absolute inset-[10%] rounded-[50%] border border-[rgba(167,139,250,0.18)]" />
+              <div className="absolute left-[22%] top-[16%] h-[28%] w-[22%] rounded-full bg-[rgba(242,240,235,0.18)] blur-xl" />
+              <div className="absolute inset-x-[22%] top-[48%] h-px bg-[linear-gradient(90deg,transparent,rgba(125,211,252,0.62),transparent)]" />
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            <div className="rounded-[1rem] border border-[rgba(167,139,250,0.24)] bg-[rgba(167,139,250,0.08)] p-4">
+              <p className="font-mono text-[11px] tracking-[0.16em] text-[color:var(--color-accent-primary)]">{isZh ? "本次观察" : "CURRENT OBSERVATION"}</p>
+              <p className="mt-3 font-serif text-2xl">{isZh ? "留连" : "Pause"}</p>
+              <p className="mt-2 text-xs leading-5 text-[color:var(--color-muted)]">
+                {isZh ? "更像关系停滞与信息不足，而不是明确否定。" : "More like stalled movement and missing information than a clear refusal."}
+              </p>
+            </div>
+            {[
+              [isZh ? "事实" : "Facts", isZh ? "已发生的互动" : "Observed interaction"],
+              [isZh ? "未知" : "Unknowns", isZh ? "对方真实意图" : "The other person's intent"],
+              [isZh ? "行动" : "Action", isZh ? "先暂停推进 3 天" : "Pause advancement for 3 days"],
+            ].map(([label, text]) => (
+              <div key={label} className="flex items-center justify-between gap-4 border-b border-[color:var(--color-border)] pb-3 text-sm">
+                <span className="text-[color:var(--color-secondary)]">{label}</span>
+                <span className="text-right text-[color:var(--color-foreground)]">{text}</span>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
+  );
+}
+
+function ProcessStrip({ items }: { items: string[][] }) {
+  return (
+    <section className="py-5">
+      <div className="grid gap-3 rounded-[1.5rem] border border-[color:var(--color-border)] bg-[rgba(15,17,25,0.58)] p-3 sm:grid-cols-2 lg:grid-cols-4">
+        {items.map(([title, text], index) => (
+          <div key={title} className="process-cell rounded-[1rem] px-4 py-4">
+            <p className="font-mono text-xs text-[color:var(--color-accent-secondary)]">0{index + 1}</p>
+            <h2 className="mt-2 text-base font-semibold">{title}</h2>
+            <p className="mt-2 text-sm leading-6 text-[color:var(--color-muted)]">{text}</p>
+          </div>
+        ))}
+      </div>
+    </section>
   );
 }
 
@@ -255,8 +298,13 @@ function TrustCard({ title, text }: { title: string; text: string }) {
 }
 
 function FeaturedProduct({ item, locale }: { item: ProductCard; locale: Locale }) {
+  const accentClass =
+    item.accent === "violet"
+      ? "border-[rgba(167,139,250,0.3)] bg-[linear-gradient(180deg,rgba(167,139,250,0.11),rgba(255,255,255,0.025))]"
+      : "border-[rgba(125,211,252,0.3)] bg-[linear-gradient(180deg,rgba(125,211,252,0.09),rgba(255,255,255,0.025))]";
+
   return (
-    <article className="group rounded-[1.5rem] border border-[color:var(--color-border)] bg-[linear-gradient(180deg,rgba(255,255,255,0.075),rgba(255,255,255,0.025))] p-6 transition hover:border-[color:var(--color-border-active)] hover:bg-[rgba(26,30,43,0.72)]">
+    <article className={`group rounded-[1.5rem] border p-6 transition hover:border-[color:var(--color-border-active)] hover:bg-[rgba(26,30,43,0.72)] ${accentClass}`}>
       <div className="flex flex-wrap gap-2">
         {item.meta.map((meta) => (
           <span key={meta} className="rounded-full border border-[color:var(--color-border)] px-3 py-1 text-xs text-[color:var(--color-muted)]">
@@ -276,7 +324,7 @@ function FeaturedProduct({ item, locale }: { item: ProductCard; locale: Locale }
 function ToolLink({ tool, locale }: { tool: ToolCard; locale: Locale }) {
   return (
     <Link href={`/${locale}${tool.href}`} className="flex min-h-32 gap-4 rounded-[1.25rem] border border-[color:var(--color-border)] bg-[rgba(15,17,25,0.5)] p-5 transition hover:border-[color:rgba(125,211,252,0.35)] hover:bg-[rgba(26,30,43,0.72)]">
-      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[color:rgba(125,211,252,0.3)] font-mono text-sm text-[color:var(--color-accent-secondary)]">
+      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[color:rgba(125,211,252,0.3)] font-mono text-xs text-[color:var(--color-accent-secondary)]">
         {tool.icon}
       </span>
       <span>
@@ -284,5 +332,45 @@ function ToolLink({ tool, locale }: { tool: ToolCard; locale: Locale }) {
         <span className="mt-2 block text-sm leading-6 text-[color:var(--color-muted)]">{tool.description}</span>
       </span>
     </Link>
+  );
+}
+
+function ReportPreview({ isZh }: { isZh: boolean }) {
+  const rows = isZh
+    ? [
+        ["已确认的事实", "你们最近一次明确互动发生在三天前。"],
+        ["你目前的判断", "你更担心的是停滞，而不是冲突本身。"],
+        ["还不能确认", "对方是否已经做出最终决定。"],
+        ["传统视角", "留连：事情暂缓，信息未齐。"],
+        ["建议下一步", "先停止追问，整理一次可验证事实。"],
+        ["停止条件", "出现贬低、威胁、持续失联时不再推进。"],
+      ]
+    : [
+        ["Confirmed facts", "The last clear interaction happened three days ago."],
+        ["Your current read", "The concern is more about stagnation than conflict."],
+        ["Still unknown", "Whether the other person has made a final decision."],
+        ["Traditional lens", "Pause: movement is slow and information is incomplete."],
+        ["Suggested next step", "Stop chasing and list only verifiable facts first."],
+        ["Stop conditions", "Do not advance if contempt, threats, or prolonged silence appears."],
+      ];
+
+  return (
+    <div className="overflow-hidden rounded-[1.5rem] border border-[rgba(125,211,252,0.24)] bg-[rgba(20,23,34,0.78)] shadow-[0_24px_80px_rgba(0,0,0,0.26)]">
+      <div className="grid border-b border-[color:var(--color-border)] px-5 py-4 sm:grid-cols-[160px_1fr]">
+        <p className="font-mono text-xs tracking-[0.18em] text-[color:var(--color-accent-secondary)]">{isZh ? "脱敏样例" : "ANONYMIZED SAMPLE"}</p>
+        <p className="mt-2 text-sm text-[color:var(--color-muted)] sm:mt-0">
+          {isZh ? "结构先于结论，边界先于建议。" : "Structure before verdicts. Boundaries before advice."}
+        </p>
+      </div>
+      <div className="divide-y divide-[color:var(--color-border)]">
+        {rows.map(([label, text], index) => (
+          <div key={label} className="grid gap-2 px-5 py-4 sm:grid-cols-[48px_180px_1fr] sm:items-start">
+            <p className="font-mono text-xs text-[color:var(--color-secondary)]">0{index + 1}</p>
+            <h3 className="text-sm font-semibold text-[color:var(--color-foreground)]">{label}</h3>
+            <p className="text-sm leading-7 text-[color:var(--color-muted)]">{text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }
